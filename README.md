@@ -1,9 +1,9 @@
-# 🏗 Scaffold-ETH 2
-
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+<div align="center">
+  <h1 align="center">Scroll Fighter </h1>
+  <h3>Bringing violence on-chain with Scroll and Noir</h3>
+  
+![logo](logo.png)
+</div>
 
 🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
 
@@ -67,6 +67,27 @@ Visit your app on: `http://localhost:3000`. You can interact with your smart con
 - Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
 - Edit your deployment scripts in `packages/hardhat/deploy`
 - Edit your smart contract test in: `packages/hardhat/test`. To run test use `yarn hardhat:test`
+
+## Partner Bounties
+
+### Ankr
+Use RPC (only pays credits so not spending much time on this one)
+
+### Aztec
+...
+
+### Chainlink
+Use Data Feeds
+
+### Covalent
+Use API, SDK or GoldRush Kit
+
+### Sindri
+Use of  Sindri's API [TODO: implement this]
+
+### The Graph
+Create graph to query games
+
 
 ## Documentation
 
