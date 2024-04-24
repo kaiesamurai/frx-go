@@ -49,6 +49,7 @@ export const FightDisplay = () => {
             src={
               playFight ? getImageForAction(fighters[0], results[currentRound].PlayerOneAction) : fighters[0].idleImage
             }
+            className="h-40 w-40 inline-block "
             alt={fighters[0].name}
           />
         </div>
@@ -59,6 +60,7 @@ export const FightDisplay = () => {
               playFight ? getImageForAction(fighters[1], results[currentRound].PlayerTwoAction) : fighters[1].idleImage
             }
             alt={fighters[1].name}
+            className="h-40 w-40 inline-block "
             style={{ transform: "scaleX(-1)" }} // Flips the image horizontally
           />
         </div>
