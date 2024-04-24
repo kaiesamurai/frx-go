@@ -6,6 +6,331 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   534351: {
+    ScrollFighter: {
+      address: "0x912f109a2d84E83096Ea18B14E9C41875dAEf9fD",
+      abi: [
+        {
+          inputs: [],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "gameId",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "fighterId",
+              type: "uint256",
+            },
+          ],
+          name: "FighterSelected",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "gameId",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "winner",
+              type: "address",
+            },
+          ],
+          name: "GameEnded",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "gameId",
+              type: "uint256",
+            },
+          ],
+          name: "GameStarted",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "gameId",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "round",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "player1",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "action1",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "player2",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "action2",
+              type: "uint256",
+            },
+          ],
+          name: "RoundResult",
+          type: "event",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "fighters",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "hp",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "games",
+          outputs: [
+            {
+              internalType: "enum IScrollFighter.GameState",
+              name: "gameState",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "currentRound",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "winner",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "nextGameId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_gameId",
+              type: "uint256",
+            },
+            {
+              internalType: "enum IScrollFighter.PlayerAction",
+              name: "_action",
+              type: "uint8",
+            },
+          ],
+          name: "playerAction",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_gameId",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_fighterId",
+              type: "uint256",
+            },
+          ],
+          name: "selectFighter",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_opponent",
+              type: "address",
+            },
+          ],
+          name: "startGame",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {},
+    },
+    UltraVerifier: {
+      address: "0xc15BC025d57bec9FA39e18701b4f0b3b5a067B6C",
+      abi: [
+        {
+          inputs: [],
+          name: "INVALID_VERIFICATION_KEY",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MOD_EXP_FAILURE",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "OPENING_COMMITMENT_FAILED",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "PAIRING_FAILED",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "PAIRING_PREAMBLE_FAILED",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "POINT_NOT_ON_CURVE",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "expected",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "actual",
+              type: "uint256",
+            },
+          ],
+          name: "PUBLIC_INPUT_COUNT_INVALID",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "PUBLIC_INPUT_GE_P",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "PUBLIC_INPUT_INVALID_BN128_G1_POINT",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "getVerificationKeyHash",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "pure",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes",
+              name: "_proof",
+              type: "bytes",
+            },
+            {
+              internalType: "bytes32[]",
+              name: "_publicInputs",
+              type: "bytes32[]",
+            },
+          ],
+          name: "verify",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {},
+    },
     YourContract: {
       address: "0x83277E9FE7Cc93Ad2D5986b87659A6fa80A48Ac0",
       abi: [

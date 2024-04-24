@@ -8,7 +8,7 @@ import { Contract } from "ethers";
  *
  * @param hre HardhatRuntimeEnvironment object.
  */
-const deployScrollFighter: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployVerifier: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   /*
     On localhost, the deployer account is the one that comes with Hardhat, which is already funded.
 
@@ -22,7 +22,7 @@ const deployScrollFighter: DeployFunction = async function (hre: HardhatRuntimeE
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("ScrollFighter", {
+  await deploy("UltraVerifier", {
     from: deployer,
     // Contract constructor arguments
     args: [],
@@ -33,12 +33,12 @@ const deployScrollFighter: DeployFunction = async function (hre: HardhatRuntimeE
   });
 
   // Get the deployed contract to interact with it after deploying.
-  await hre.ethers.getContract<Contract>("ScrollFighter", deployer);
+  await hre.ethers.getContract<Contract>("UltraVerifier", deployer);
   // console.log("👋 Initial greeting:", await contract.greeting());
 };
 
-export default deployScrollFighter;
+export default deployVerifier;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
 // e.g. yarn deploy --tags YourContract
-deployScrollFighter.tags = ["ScrollFighter"];
+deployVerifier.tags = ["Verifier"];
