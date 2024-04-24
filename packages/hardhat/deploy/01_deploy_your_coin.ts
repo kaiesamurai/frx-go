@@ -1,7 +1,6 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { Contract } from "ethers";
-// import deployedContracts from "../../nextjs/contracts/deployedContracts";
 
 /**
  * Deploys a contract named "ScrollFighter" using the deployer account and
@@ -23,12 +22,10 @@ const deployScrollFighter: DeployFunction = async function (hre: HardhatRuntimeE
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  // const verifier_contract_address = deployedContracts[534351]["UltraVerifier"].address;
-  await deploy("ScrollFighter", {
+  await deploy("FightingTokens", {
     from: deployer,
     // Contract constructor arguments
-    // args: [verifier_contract_address],
-    args: ["0xc15BC025d57bec9FA39e18701b4f0b3b5a067B6C"],
+    args: [],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
@@ -36,7 +33,7 @@ const deployScrollFighter: DeployFunction = async function (hre: HardhatRuntimeE
   });
 
   // Get the deployed contract to interact with it after deploying.
-  await hre.ethers.getContract<Contract>("ScrollFighter", deployer);
+  await hre.ethers.getContract<Contract>("FightingTokens", deployer);
   // console.log("👋 Initial greeting:", await contract.greeting());
 };
 
@@ -44,4 +41,4 @@ export default deployScrollFighter;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
 // e.g. yarn deploy --tags YourContract
-deployScrollFighter.tags = ["ScrollFighter"];
+deployScrollFighter.tags = ["FightingTokens"];
