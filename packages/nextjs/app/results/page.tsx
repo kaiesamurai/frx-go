@@ -1,20 +1,16 @@
-// import { useState } from "react";
-import { SelectGame } from "../../components/SelectGame";
 import type { NextPage } from "next";
-// import { useReadContract } from "wagmi";
-// Ensure this is appropriate for your version of wagmi
-// import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
+import { FightDisplay } from "~~/components/FightDisplay";
 import { getMetadata } from "~~/utils/scaffold-eth/getMetadata";
 
 export const metadata = getMetadata({
-  title: "Join game",
-  description: "Join an existing game",
+  title: "Create game",
+  description: "Start a new game",
 });
 
-const Join: NextPage = () => {
+const Results: NextPage = () => {
   return (
     <>
-      <SelectGame />
+      <FightDisplay />
       {/* <div className="text-center mt-8 bg-secondary p-10">
         <h1 className="text-4xl my-0">Debug Contracts</h1>
         <p className="text-neutral">
@@ -29,4 +25,4 @@ const Join: NextPage = () => {
   );
 };
 
-export default Join;
+export default Results;

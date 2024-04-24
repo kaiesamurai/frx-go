@@ -1,83 +1,14 @@
-// GameForm.tsx
 "use client";
 
+// GameForm.tsx
 import React, { useState } from "react";
+import { Fighter, fighters } from "./Fighters";
 import { formatUnits } from "viem";
 import { useAccount, useBalance, useWriteContract } from "wagmi";
 // import { isAddress } from "web3-validator";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 
-// GameForm.tsx
-
-// GameForm.tsx
-
-// GameForm.tsx
-
-// GameForm.tsx
-
-// GameForm.tsx
-
-// GameForm.tsx
-
-// GameForm.tsx
-
-// GameForm.tsx
-
-// GameForm.tsx
-
-// GameForm.tsx
-
-// GameForm.tsx
-
-// GameForm.tsx
-
-// GameForm.tsx
-
-// GameForm.tsx
-
-interface Fighter {
-  id: number;
-  name: string;
-  staticImage: string; // Static image URL
-  animatedImage: string; // Animated GIF URL
-  health: number;
-  attack: number;
-  defense: number;
-  specialMove: string;
-}
-
-const fighters: Fighter[] = [
-  {
-    id: 1,
-    name: "Biker",
-    staticImage: "/sprites/biker.png",
-    animatedImage: "/sprites/biker.gif",
-    health: 6,
-    attack: 8,
-    defense: 5,
-    specialMove: "⏩ Speed Burst",
-  },
-  {
-    id: 2,
-    name: "Punk",
-    staticImage: "/sprites/punk.png",
-    animatedImage: "/sprites/punk.gif",
-    health: 8,
-    attack: 6,
-    defense: 5,
-    specialMove: "🥊 Fight Dirty",
-  },
-  {
-    id: 3,
-    name: "Cyborg",
-    staticImage: "/sprites/cyborg.png",
-    animatedImage: "/sprites/cyborg.gif",
-    health: 6,
-    attack: 6,
-    defense: 6,
-    specialMove: "💥 Spirit Bomb",
-  },
-];
+// Adjust the path as necessary
 
 interface GameFormProps {
   mode: "create" | "join";
@@ -202,7 +133,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
                       onClick={() => handleFighterSelect(fighter)}
                     >
                       <img
-                        src={selectedFighter?.id === fighter.id ? fighter.animatedImage : fighter.staticImage}
+                        src={selectedFighter?.id === fighter.id ? fighter.idleImage : fighter.staticImage}
                         alt={fighter.name}
                         className={`h-40 w-40 inline-block ${
                           selectedFighter?.id === fighter.id ? "ring-4 ring-primary" : ""
