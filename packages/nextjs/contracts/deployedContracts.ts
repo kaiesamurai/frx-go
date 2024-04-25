@@ -517,13 +517,18 @@ const deployedContracts = {
       },
     },
     ScrollFighter: {
-      address: "0xf97379b8768c2bb3CA23413766B1DB6840B551a0",
+      address: "0xD2a3dBEe766c5F77A1cA1368729E27542Ed43790",
       abi: [
         {
           inputs: [
             {
               internalType: "address",
               name: "_verifier",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_token",
               type: "address",
             },
           ],
@@ -648,10 +653,15 @@ const deployedContracts = {
               name: "hashCommitment",
               type: "bytes32",
             },
+            {
+              internalType: "uint256",
+              name: "_amount",
+              type: "uint256",
+            },
           ],
           name: "acceptGame",
           outputs: [],
-          stateMutability: "payable",
+          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -673,6 +683,19 @@ const deployedContracts = {
               internalType: "uint256",
               name: "hp",
               type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "fightingTokens",
+          outputs: [
+            {
+              internalType: "contract IERC20",
+              name: "",
+              type: "address",
             },
           ],
           stateMutability: "view",
@@ -745,10 +768,15 @@ const deployedContracts = {
               name: "hashCommitment",
               type: "bytes32",
             },
+            {
+              internalType: "uint256",
+              name: "_amount",
+              type: "uint256",
+            },
           ],
           name: "proposeGame",
           outputs: [],
-          stateMutability: "payable",
+          stateMutability: "nonpayable",
           type: "function",
         },
         {

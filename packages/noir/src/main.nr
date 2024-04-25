@@ -1,15 +1,44 @@
-def main(private field fighterID, private field secret) -> (bool):
-    // Simple check on IDy
-    assert(fighterID > 0 && fighterID < 100);
-    // Check the secret meets some criteria (e.g., hash of some known value)
-    assert(hash_to_field(secret) == some_predefined_hash);
-    return true;  // Output true if all checks pass
-
+fn main(fighterID: Field, moves: [Field; 3], secret: Field) {
+    assert(fighterID as u32 > 0);
+    assert(fighterID as u32 < 100);
+    for move in moves {
+        assert(move as u32 > 0);
+        assert(move as u32 < 4);
+    }
+}
 
 #[test]
 fn test_main() {
-    main(1, 2);
+    let fighterID: Field = 1;
+    let moves: [Field; 3] = [1, 2, 3];
+    let secret: Field = 1;
 
-    // Uncomment to make test fail
-    // main(1, 1);
+    main(fighterID, moves, secret);
+}
+
+#[test(should_fail)]
+fn test_unknown_fighter() {
+    let fighterID: Field = 1;
+    let moves: [Field; 3] = [1, 2, 3];
+    let secret: Field = 1;
+
+    main(fighterID, moves, secret);
+}
+
+#[test(should_fail)]
+fn test_invalid_moves() {
+    let fighterID: Field = 1;
+    let moves: [Field; 3] = [1, 2, 3];
+    let secret: Field = 1;
+
+    main(fighterID, moves, secret);
+}
+
+#[test(should_fail)]
+fn test_secret_fail() {
+    let fighterID: Field = 1;
+    let moves: [Field; 3] = [1, 2, 3];
+    let secret: Field = 1;
+
+    main(fighterID, moves, secret);
 }

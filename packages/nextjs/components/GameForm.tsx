@@ -68,7 +68,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
             address: deployedContractData.address,
             functionName: "proposeGame",
             abi: deployedContractData.abi,
-            args: [opponent, bytes32Value],
+            args: [opponent, bytes32Value, BigInt(amount)],
           });
         await writeTxn(makeWriteWithParams);
         // onChange();
