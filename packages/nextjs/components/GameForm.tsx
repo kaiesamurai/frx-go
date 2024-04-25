@@ -37,14 +37,40 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
 
   const [selectedFighter, setSelectedFighter] = useState<Fighter | null>(null);
   const [selectedMoves, setSelectedMoves] = useState<Move[]>(["Attack", "Attack", "Attack"]);
+  const [specialMoveUsed, setSpecialMoveUsed] = useState(false);
   const { targetNetwork } = useTargetNetwork();
 
   const writeDisabled = !chain || chain?.id !== targetNetwork.id;
 
   const handleMoveChange = (index: number, move: Move): void => {
-    const newMoves = [...selectedMoves];
-    newMoves[index] = move;
-    setSelectedMoves(newMoves);
+    console.log("special move used" + specialMoveUsed);
+    setSelectedMoves(prevMoves => {
+      const newMoves = [...prevMoves];
+      const currentMove = newMoves[index];
+      const isSpecialMove = move === "Special";
+      const wasSpecialMove = currentMove === "Special";
+
+      // Handling special move selection
+      if (isSpecialMove && specialMoveUsed && currentMove !== "Special") {
+        console.log("alert");
+        alert("Special move can only be used once per game.");
+        return newMoves; // Return previous state if change is invalid
+      }
+
+      // Updating the move
+      newMoves[index] = move;
+
+      // Update special move usage state
+      if (isSpecialMove) {
+        setSpecialMoveUsed(true);
+      } else if (wasSpecialMove) {
+        // Check if any remaining move is still a special move
+        const anySpecial = newMoves.some(m => m === selectedFighter?.specialMove);
+        setSpecialMoveUsed(anySpecial);
+      }
+
+      return newMoves; // Return the updated moves
+    });
   };
 
   const { isPending, writeContractAsync } = useWriteContract();
@@ -188,9 +214,11 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
 
                   <p>Special Move: {selectedFighter ? selectedFighter.specialMove : "None"} </p>
                 </div>
-                <div>
-                  <p>Select moves for each round:</p>
-                  <div className="flex flex-col gap-4">
+
+                <div></div>
+                <p>Select moves for each round:</p>
+                <div className="flex flex-col gap-4">
+                  <div>
                     {Array.from({ length: 3 }).map((_, roundIndex) => (
                       <div key={roundIndex} className="flex flex-col items-center">
                         <p>Round {roundIndex + 1}</p>
@@ -200,6 +228,11 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
                               key={move}
                               className={`btn ${selectedMoves[roundIndex] === move ? "btn-active" : "btn-outline"}`}
                               onClick={() => handleMoveChange(roundIndex, move)}
+                              disabled={
+                                move === selectedFighter?.specialMove &&
+                                specialMoveUsed &&
+                                selectedMoves[roundIndex] !== move
+                              }
                             >
                               {move}
                             </button>

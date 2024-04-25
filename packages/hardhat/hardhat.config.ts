@@ -17,7 +17,7 @@ const providerApiKey = process.env.ALCHEMY_API_KEY || "oKxs-03sij-U_N0iOlrSsZFr2
 const deployerPrivateKey =
   process.env.DEPLOYER_PRIVATE_KEY ?? "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
 // If not set, it uses ours Etherscan default API key.
-const etherscanApiKey = process.env.ETHERSCAN_API_KEY || "DNXJA8RX2Q3VZ4URQIWP7Z68CJXQZSC6AW";
+const scrollscanApiKey = process.env.SCROLLSCAN_API_KEY || "";
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -121,7 +121,7 @@ const config: HardhatUserConfig = {
   },
   // configuration for harhdat-verify plugin
   etherscan: {
-    apiKey: `${etherscanApiKey}`,
+    apiKey: `${scrollscanApiKey}`,
     customChains: [
       {
         network: "scrollSepolia",
@@ -136,7 +136,7 @@ const config: HardhatUserConfig = {
   // configuration for etherscan-verify from hardhat-deploy plugin
   verify: {
     etherscan: {
-      apiKey: `${etherscanApiKey}`,
+      apiKey: `${scrollscanApiKey}`,
     },
   },
   sourcify: {

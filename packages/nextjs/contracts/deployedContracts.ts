@@ -517,7 +517,7 @@ const deployedContracts = {
       },
     },
     ScrollFighter: {
-      address: "0xD2a3dBEe766c5F77A1cA1368729E27542Ed43790",
+      address: "0x4A71867B2739F0976cCC950b643582CA94E6cA28",
       abi: [
         {
           inputs: [
@@ -622,6 +622,31 @@ const deployedContracts = {
             {
               indexed: false,
               internalType: "address",
+              name: "winner",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "wageredAmount",
+              type: "uint256",
+            },
+          ],
+          name: "GameEndedByTimeout",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "gameId",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "address",
               name: "player1",
               type: "address",
             },
@@ -649,14 +674,14 @@ const deployedContracts = {
               type: "uint256",
             },
             {
-              internalType: "bytes32",
-              name: "hashCommitment",
-              type: "bytes32",
+              internalType: "uint256",
+              name: "_fighterId",
+              type: "uint256",
             },
             {
-              internalType: "uint256",
-              name: "_amount",
-              type: "uint256",
+              internalType: "uint256[3]",
+              name: "moves",
+              type: "uint256[3]",
             },
           ],
           name: "acceptGame",
@@ -681,7 +706,22 @@ const deployedContracts = {
             },
             {
               internalType: "uint256",
-              name: "hp",
+              name: "health",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "attack",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "defense",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "special",
               type: "uint256",
             },
           ],
@@ -709,22 +749,72 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
+          name: "gameFinishedByTimeout",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "gameId",
+              type: "uint256",
+            },
+          ],
           name: "getGame",
           outputs: [
             {
-              internalType: "address[2]",
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "wageredAmount",
+                  type: "uint256",
+                },
+                {
+                  internalType: "address[2]",
+                  name: "players",
+                  type: "address[2]",
+                },
+                {
+                  internalType: "bytes32",
+                  name: "challengerCommitment",
+                  type: "bytes32",
+                },
+                {
+                  internalType: "uint256[2]",
+                  name: "fighterIds",
+                  type: "uint256[2]",
+                },
+                {
+                  internalType: "uint256[3][2]",
+                  name: "moves",
+                  type: "uint256[3][2]",
+                },
+                {
+                  internalType: "enum ScrollFighter.GameState",
+                  name: "gameState",
+                  type: "uint8",
+                },
+                {
+                  internalType: "address",
+                  name: "winner",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "lastActionBlock",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct ScrollFighter.Game",
               name: "",
-              type: "address[2]",
-            },
-            {
-              internalType: "uint256[2]",
-              name: "",
-              type: "uint256[2]",
-            },
-            {
-              internalType: "bool[2]",
-              name: "",
-              type: "bool[2]",
+              type: "tuple",
             },
           ],
           stateMutability: "view",
@@ -746,19 +836,6 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "uint256",
-              name: "gameId",
-              type: "uint256",
-            },
-          ],
-          name: "playGame",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
               internalType: "address",
               name: "_opponent",
               type: "address",
@@ -775,39 +852,6 @@ const deployedContracts = {
             },
           ],
           name: "proposeGame",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "gameId",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "fighterID",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256[3]",
-              name: "moves",
-              type: "uint256[3]",
-            },
-            {
-              internalType: "uint256",
-              name: "nonce",
-              type: "uint256",
-            },
-            {
-              internalType: "bytes",
-              name: "proof",
-              type: "bytes",
-            },
-          ],
-          name: "revealFighter",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",

@@ -71,32 +71,40 @@ Visit your app on: `http://localhost:3000`. You can interact with your smart con
 ## Partner Bounties
 
 ### Ankr
-Use RPC (only pays credits so not spending much time on this one)
+
+This project uses Ankr RPC to deploy the game smart contracts.
 
 ### Aztec
+
 ...
 
-### Chainlink
-Use Data Feeds
-
 ### Covalent
+
 Use API, SDK or GoldRush Kit
 
 ### Sindri
-Use of  Sindri's API [TODO: implement this]
+
+Use of Sindri's API [TODO: implement this]
 
 ### The Graph
+
 Create graph to query games
 
+## Links
 
-## Documentation
+[Vercel deployment]()
+[Presentation slides]()
+[Presentation video]()
+[Dorahacks BUILD]()
 
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
+### Verified smart contracts
 
-To know more about its features, check out our [website](https://scaffoldeth.io).
+[ScrollFighter](https://sepolia.scrollscan.com/address/0xD2a3dBEe766c5F77A1cA1368729E27542Ed43790#code)
+[FighterCoins](https://sepolia.scrollscan.com/address/0x64CDeB6CD5ecfB002bdaFabc98B5C883C5C06B27#code)
+[UltraVerifier](https://sepolia.scrollscan.com/address/0xc15BC025d57bec9FA39e18701b4f0b3b5a067B6C#code)
 
-## Contributing to Scaffold-ETH 2
+## Team
 
-We welcome contributions to Scaffold-ETH 2!
+This project was build for the Scroll VORTEx 1 hackathon by:
 
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+- [arjanjohan](https://x.com/arjanjohan/)
