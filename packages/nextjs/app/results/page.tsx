@@ -3,8 +3,8 @@ import { FightDisplay } from "~~/components/FightDisplay";
 import { getMetadata } from "~~/utils/scaffold-eth/getMetadata";
 
 export const metadata = getMetadata({
-  title: "Create game",
-  description: "Start a new game",
+  title: "Results",
+  description: "Watch the results of the fight!",
 });
 
 const Results: NextPage = () => {

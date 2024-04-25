@@ -7,6 +7,8 @@ import { formatUnits } from "viem";
 import { useAccount, useBalance, useWriteContract } from "wagmi";
 // import { isAddress } from "web3-validator";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
+import { useTransactor } from "~~/hooks/scaffold-eth";
+import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 
 // Adjust the path as necessary
 
@@ -20,9 +22,11 @@ const moves = ["Attack", "Defend", "Special"] as const;
 type Move = (typeof moves)[number];
 
 export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFormProps) => {
+  const writeTxn = useTransactor();
+
   const [amount, setAmount] = useState<string>(initialAmount || "0");
   const [opponent, setOpponent] = useState<string>(initialOpponentAddress || "");
-  const { address } = useAccount();
+  const { address, chain } = useAccount();
   const contractName = "ScrollFighter";
   const { data: deployedContractData } = useDeployedContractInfo(contractName);
 
@@ -33,6 +37,9 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
 
   const [selectedFighter, setSelectedFighter] = useState<Fighter | null>(null);
   const [selectedMoves, setSelectedMoves] = useState<Move[]>(["Attack", "Attack", "Attack"]);
+  const { targetNetwork } = useTargetNetwork();
+
+  const writeDisabled = !chain || chain?.id !== targetNetwork.id;
 
   const handleMoveChange = (index: number, move: Move): void => {
     const newMoves = [...selectedMoves];
@@ -40,7 +47,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
     setSelectedMoves(newMoves);
   };
 
-  const { writeContract } = useWriteContract();
+  const { isPending, writeContractAsync } = useWriteContract();
 
   // When a fighter is clicked, update the selectedFighter state
   const handleFighterSelect = (fighter: Fighter) => {
@@ -48,21 +55,26 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
   };
 
   const proposeGame = async () => {
-    if (!deployedContractData?.abi || !deployedContractData?.address) {
-      console.error("Contract data is not loaded.");
-      return;
-    }
+    if (writeContractAsync) {
+      if (!deployedContractData?.abi || !deployedContractData?.address) {
+        console.error("Contract data is not loaded.");
+        return;
+      }
+      try {
+        const bytes32Value = `0x4100000000000000000000000000000000000000000000000000000000000000`;
 
-    try {
-      await writeContract({
-        abi: deployedContractData.abi,
-        address: deployedContractData.address,
-        functionName: "proposeGame",
-        args: [opponent, amount],
-      });
-      console.log("Game proposed successfully!");
-    } catch (error) {
-      console.error("Failed to propose game:", error);
+        const makeWriteWithParams = () =>
+          writeContractAsync({
+            address: deployedContractData.address,
+            functionName: "proposeGame",
+            abi: deployedContractData.abi,
+            args: [opponent, bytes32Value],
+          });
+        await writeTxn(makeWriteWithParams);
+        // onChange();
+      } catch (e: any) {
+        console.error("⚡️ ~ file: WriteOnlyFunctionForm.tsx:handleWrite ~ error", e);
+      }
     }
   };
 
@@ -148,7 +160,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
                     Health:
                     <div className="w-full bg-gray-200 rounded-full h-4">
                       <div
-                        className="bg-primary h-4 rounded-full bg-red-400"
+                        className="bg-primary h-4 rounded-full bg-red-500"
                         style={{ width: `${selectedFighter ? selectedFighter.health * 10 : 0}%` }}
                       ></div>
                     </div>
@@ -158,7 +170,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
                     Attack:
                     <div className="w-full bg-gray-200 rounded-full h-4">
                       <div
-                        className="bg-primary h-4 rounded-full bg-green-400"
+                        className="bg-primary h-4 rounded-full bg-green-500"
                         style={{ width: `${selectedFighter ? selectedFighter.attack * 10 : 0}%` }}
                       ></div>
                     </div>
@@ -168,7 +180,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
                     Defense:
                     <div className="w-full bg-gray-200 rounded-full h-4">
                       <div
-                        className="bg-primary h-4 rounded-full bg-blue-400"
+                        className="bg-primary h-4 rounded-full bg-blue-500"
                         style={{ width: `${selectedFighter ? selectedFighter.defense * 10 : 0}%` }}
                       ></div>
                     </div>
@@ -199,9 +211,11 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
                 </div>
                 <button
                   className="btn btn-secondary btn-sm"
+                  disabled={writeDisabled || isPending}
                   onClick={() => (mode === "create" ? proposeGame() : joinGame())}
                 >
-                  {mode === "create" ? "Propose game" : "Join game"}
+                  {isPending && <span className="loading loading-spinner loading-xs"></span>}
+                  {mode === "create" ? "Start a fight" : "Fight!"}
                 </button>
               </div>
             </div>
