@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Fighter, fighters } from "./Fighters";
 
 const results = [
@@ -12,6 +12,7 @@ const results = [
 export const FightDisplay = () => {
   const [currentRound, setCurrentRound] = useState(0);
   const [playFight, setPlayFight] = useState(false);
+  const [showRoundAnnouncement, setShowRoundAnnouncement] = useState(false);
 
   const getImageForAction = (fighter: Fighter, action: string) => {
     switch (action) {
@@ -33,44 +34,84 @@ export const FightDisplay = () => {
   const playRound = (round: number) => {
     if (round < results.length) {
       setCurrentRound(round);
-      setTimeout(() => playRound(round + 1), 2000); // Move to next round after 2 seconds
+      setShowRoundAnnouncement(true);
+      setTimeout(() => {
+        setShowRoundAnnouncement(false);
+        setTimeout(() => {
+          playRound(round + 1);
+        }, 3000); // Duration of action before next round starts
+      }, 2000); // Duration to show round announcement
     } else {
       setPlayFight(false); // End the fight
     }
   };
 
+  useEffect(() => {
+    if (playFight) {
+      playRound(0);
+    }
+  }, [playFight]);
+
   return (
-    <div>
-      <h1>Fight Simulation</h1>
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
-        <div>
-          <h2>{fighters[0].name}</h2>
-          <img
-            src={
-              playFight ? getImageForAction(fighters[0], results[currentRound].PlayerOneAction) : fighters[0].idleImage
-            }
-            className="h-40 w-40 inline-block "
-            alt={fighters[0].name}
-          />
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+        backgroundImage: 'url("/wafflehouse.jpeg")',
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center",
+        width: "640px",
+        height: "360px",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {showRoundAnnouncement && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            color: "white",
+            fontSize: "24px",
+            fontWeight: "bold",
+            textShadow: "2px 2px 4px #000",
+          }}
+        >
+          Round {currentRound + 1}
         </div>
-        <div>
-          <h2>{fighters[1].name}</h2>
-          <img
-            src={
-              playFight ? getImageForAction(fighters[1], results[currentRound].PlayerTwoAction) : fighters[1].idleImage
-            }
-            alt={fighters[1].name}
-            className="h-40 w-40 inline-block "
-            style={{ transform: "scaleX(-1)" }} // Flips the image horizontally
-          />
-        </div>
-      </div>
-      <button
-        onClick={() => {
-          setPlayFight(true);
-          playRound(0);
-        }}
+      )}
+      {/* Health bars and players positioned */}
+      <div
+        style={{ position: "absolute", top: "10px", width: "100%", display: "flex", justifyContent: "space-between" }}
       >
+        <div style={{ backgroundColor: "red", height: "10px", width: "40%", margin: "0 10px" }} />
+        <div style={{ backgroundColor: "red", height: "10px", width: "40%", margin: "0 10px" }} />
+      </div>
+
+      <div style={{ position: "absolute", bottom: "50px", left: "80px" }}>
+        <img
+          src={
+            playFight ? getImageForAction(fighters[0], results[currentRound].PlayerOneAction) : fighters[0].idleImage
+          }
+          alt={fighters[0].name}
+          style={{ height: "200px" }}
+        />{" "}
+      </div>
+
+      <div style={{ position: "absolute", bottom: "50px", right: "80px" }}>
+        <img
+          src={
+            playFight ? getImageForAction(fighters[1], results[currentRound].PlayerTwoAction) : fighters[1].idleImage
+          }
+          alt={fighters[1].name}
+          style={{ height: "200px", transform: "scaleX(-1)" }}
+        />{" "}
+      </div>
+
+      <button onClick={() => setPlayFight(true)} style={{ position: "absolute", bottom: "10px" }}>
         Play Fight
       </button>
     </div>
