@@ -1,11 +1,10 @@
 "use client";
 
 // GameForm.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Fighter, fighters } from "./Fighters";
 import { formatUnits } from "viem";
-import { useAccount, useBalance, useWriteContract } from "wagmi";
-// import { isAddress } from "web3-validator";
+import { useAccount, useBalance, useReadContract, useWriteContract } from "wagmi";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 import { useTransactor } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
@@ -24,7 +23,7 @@ type Move = (typeof moves)[number];
 export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFormProps) => {
   const writeTxn = useTransactor();
 
-  const [amount, setAmount] = useState<string>(initialAmount || "0");
+  const [amount, setAmount] = useState<string>(initialAmount || "");
   const [opponent, setOpponent] = useState<string>(initialOpponentAddress || "");
   const { address, chain } = useAccount();
   const contractName = "ScrollFighter";
@@ -34,7 +33,8 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
   const ethBalance = useBalance({ address: address, token: tokenContractAddress }) || 0;
   const data = ethBalance.data;
   const formattedEthBalance = formatUnits(BigInt(data?.value ?? 0), data?.decimals ?? 18);
-
+  // const [gameLoaded, setGameLoaded] = useState<boolean>(false);
+  const [gameId, setGameId] = useState<string>("");
   const [selectedFighter, setSelectedFighter] = useState<Fighter | null>(null);
   const [selectedMoves, setSelectedMoves] = useState<Move[]>(["Attack", "Attack", "Attack"]);
   const [specialMoveUsed, setSpecialMoveUsed] = useState(false);
@@ -80,6 +80,27 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
     setSelectedFighter(fighter);
   };
 
+  // Use to fetch game details
+  const { data: gameData, isLoading: isGameLoading } = useReadContract({
+    address: deployedContractData?.address || "",
+    abi: deployedContractData?.abi || [],
+    functionName: "getGame",
+    args: [BigInt(gameId)],
+  });
+
+  useEffect(() => {
+    if (gameData && !isGameLoading) {
+      setOpponent(gameData.players[0]);
+      setAmount(formatUnits(BigInt(gameData.wageredAmount), 18));
+      // setGameLoaded(true);
+    }
+  }, [gameData, isGameLoading]);
+
+  const handleGameIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setGameId(e.target.value);
+    // setGameLoaded(false); // Reset load state when game ID changes
+  };
+
   const proposeGame = async () => {
     if (writeContractAsync) {
       if (!deployedContractData?.abi || !deployedContractData?.address) {
@@ -105,19 +126,37 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
   };
 
   const joinGame = async () => {
-    // Assuming there's a similar function in your contract for joining a game
     if (!deployedContractData?.abi || !deployedContractData?.address) {
       console.error("Contract data is not loaded.");
       return;
     }
 
+    if (!selectedFighter) {
+      console.error("No fighter selected");
+      return;
+    }
+
     try {
-      //   await writeContract({
-      //     abi: deployedContractData.abi,
-      //     address: deployedContractData.address,
-      //     functionName: "joinGame",
-      //     args: [opponent, amount], // Your contract's joinGame function might require different parameters.
-      //   });
+      // Ensure moveIndices always has three elements, each converted to BigInt
+      const moveIndices = selectedMoves.map(move => BigInt(moves.indexOf(move)));
+      if (moveIndices.length !== 3) {
+        console.error("Invalid number of moves selected");
+        return;
+      }
+
+      // Convert all parts to BigInt for Solidity compatibility
+      const gameIdBigInt = BigInt(gameId);
+      const fighterIdBigInt = BigInt(selectedFighter.id);
+
+      const makeWriteWithParams = () =>
+        writeContractAsync({
+          address: deployedContractData.address,
+          functionName: "acceptGame",
+          abi: deployedContractData.abi,
+          args: [gameIdBigInt, fighterIdBigInt, moveIndices as [bigint, bigint, bigint]], // Cast as a tuple
+        });
+
+      await writeTxn(makeWriteWithParams);
       console.log("Game joined successfully!");
     } catch (error) {
       console.error("Failed to join game:", error);
@@ -137,12 +176,20 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
               </div>
               <div className="p-5 divide-y divide-base-300">
                 <h1 className="text-xl font-bold">Game Setup</h1>
+                <input
+                  type="text"
+                  placeholder="Enter Game ID to Load"
+                  value={gameId}
+                  onChange={handleGameIdChange}
+                  className="input input-bordered w-full max-w-xs"
+                />
                 <label className="block">
                   Opponent Address:
                   <input
                     type="text"
                     value={opponent}
                     onChange={e => setOpponent(e.target.value)}
+                    readOnly={mode === "join"}
                     className="input input-bordered w-full"
                     placeholder="Enter ERC20 address"
                   />
@@ -155,6 +202,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
                     max={formattedEthBalance.toString()}
                     value={amount}
                     onChange={e => setAmount(e.target.value)}
+                    readOnly={mode === "join"}
                     className="range range-primary w-full"
                   />
                   <div className="flex justify-between">

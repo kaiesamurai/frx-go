@@ -97,15 +97,17 @@ contract ScrollFighter {
 			_opponent != address(0) && _opponent != msg.sender,
 			"Invalid opponent address"
 		);
+		// add 18 decimals
+		uint amount = _amount * 10 ** 18;
 		require(
-			fightingTokens.transferFrom(msg.sender, address(this), _amount),
+			fightingTokens.transferFrom(msg.sender, address(this), amount),
 			"Transfer failed"
 		);
 
 		uint gameId = nextGameId++;
 		games[gameId] = Game({
 			id: gameId,
-			wageredAmount: _amount,
+			wageredAmount: amount,
 			players: [msg.sender, _opponent],
 			challengerCommitment: hashCommitment,
 			fighterIds: [uint(0), uint(0)],
@@ -114,7 +116,7 @@ contract ScrollFighter {
 			winner: address(0),
 			lastActionBlock: block.number
 		});
-		emit GameProposed(gameId, msg.sender, _opponent, _amount);
+		emit GameProposed(gameId, msg.sender, _opponent, amount);
 	}
 
 	function acceptGame(
