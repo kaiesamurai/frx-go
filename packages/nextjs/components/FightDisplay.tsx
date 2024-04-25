@@ -18,7 +18,7 @@ export const FightDisplay = () => {
   const [gameLoaded, setGameLoaded] = useState<boolean>(false);
 
   const [gameId, setGameId] = useState<string>("");
-  const contractName = "ScrollFighter";
+  const contractName = "ScrollFighterV2";
   const { data: deployedContractData } = useDeployedContractInfo(contractName);
 
   const getImageForAction = (fighter: Fighter, action: string) => {

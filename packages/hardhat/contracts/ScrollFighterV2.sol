@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import { UltraVerifier } from "./plonk_vk.sol";
 
-contract ScrollFighter {
+contract ScrollFighterV2 {
 	using ECDSA for bytes32;
 	UltraVerifier verifier;
 	IERC20 public fightingTokens;
@@ -104,7 +104,8 @@ contract ScrollFighter {
 	// GAME FUNCTIONS
 	function proposeGame(
 		address _opponent,
-		bytes32 hashCommitment,
+		uint _fighterId,
+		uint[3] calldata moves,
 		uint _amount
 	) external {
 		require(
@@ -123,9 +124,9 @@ contract ScrollFighter {
 			id: gameId,
 			wageredAmount: amount,
 			players: [msg.sender, _opponent],
-			challengerCommitment: hashCommitment,
-			fighterIds: [uint(0), uint(0)],
-			moves: [[uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)]],
+			challengerCommitment: bytes32(0),
+			fighterIds: [_fighterId, uint(0)],
+			moves: [moves, [uint(0), uint(0), uint(0)]],
 			pain: [[uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)]],
 			gameState: GameState.PROPOSED,
 			winner: address(0),
@@ -179,43 +180,14 @@ contract ScrollFighter {
 			msg.sender,
 			game.wageredAmount
 		);
-	}
-
-	function revealFight(
-		uint gameId,
-		uint fighterID,
-		uint[3] calldata moves,
-		uint nonce,
-		bytes memory proof
-	) public {
-		// Load game
-		require(
-			games[gameId].gameState == GameState.ACCEPTED,
-			"Game must be in accepted state"
-		);
-		Game storage game = games[gameId];
-		require(msg.sender == game.players[0], "Only challenger can reveal");
-
-		// Verify proof
-		bytes32 hash = keccak256(abi.encodePacked(fighterID, moves, nonce));
-		require(hash == game.challengerCommitment, "Commitment mismatch");
-		bytes32[] memory publicInputs = new bytes32[](1);
-		publicInputs[0] = hash;
-		require(verifier.verify(proof, publicInputs), "Invalid proof");
-
-		// Reveal fighter
-		game.fighterIds[0] = fighterID;
-		game.moves[0] = moves;
-		game.gameState = GameState.STARTED;
-		emit FightersRevealed(gameId, game.players[0], game.players[1]);
-		playGame(gameId);
+		playGame(_gameId);
 	}
 
 	function playGame(uint gameId) internal {
 		Game storage game = games[gameId];
 		require(
-			game.gameState == GameState.STARTED,
-			"Game must be in started state"
+			game.gameState == GameState.ACCEPTED,
+			"Game must be in accepted state"
 		);
 
 		game.currentHealth[0] = fighters[game.fighterIds[0]].health;

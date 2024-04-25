@@ -26,7 +26,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
   const [amount, setAmount] = useState<string>(initialAmount || "");
   const [opponent, setOpponent] = useState<string>(initialOpponentAddress || "");
   const { address, chain } = useAccount();
-  const contractName = "ScrollFighter";
+  const contractName = "ScrollFighterV2";
   const { data: deployedContractData } = useDeployedContractInfo(contractName);
 
   const tokenContractAddress = "0x64CDeB6CD5ecfB002bdaFabc98B5C883C5C06B27";
@@ -108,14 +108,29 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
         return;
       }
       try {
-        const bytes32Value = `0x4100000000000000000000000000000000000000000000000000000000000000`;
+        // const bytes32Value = `0x4100000000000000000000000000000000000000000000000000000000000000`;
+
+        // \/ \/ \/ V2 LOGIC. REMOVE THIS WHEN USING V1 \/ \/ \/
+        if (!selectedFighter) {
+          console.error("No fighter selected");
+          return;
+        }
+
+        const moveIndices = selectedMoves.map(move => BigInt(moves.indexOf(move)));
+        if (moveIndices.length !== 3) {
+          console.error("Invalid number of moves selected");
+          return;
+        }
+        const fighterIdBigInt = BigInt(selectedFighter.id);
+        // /\ /\ /\ V2 LOGIC. REMOVE THIS WHEN USING V1 /\ /\ /\
 
         const makeWriteWithParams = () =>
           writeContractAsync({
             address: deployedContractData.address,
             functionName: "proposeGame",
             abi: deployedContractData.abi,
-            args: [opponent, bytes32Value, BigInt(amount)],
+            // args: [opponent, bytes32Value, BigInt(amount)],
+            args: [opponent, fighterIdBigInt, moveIndices as [bigint, bigint, bigint], BigInt(amount)],
           });
         await writeTxn(makeWriteWithParams);
         // onChange();
@@ -153,7 +168,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
           address: deployedContractData.address,
           functionName: "acceptGame",
           abi: deployedContractData.abi,
-          args: [gameIdBigInt, fighterIdBigInt, moveIndices as [bigint, bigint, bigint]], // Cast as a tuple
+          args: [gameIdBigInt, fighterIdBigInt, moveIndices as [bigint, bigint, bigint]],
         });
 
       await writeTxn(makeWriteWithParams);

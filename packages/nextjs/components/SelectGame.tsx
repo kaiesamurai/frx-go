@@ -19,7 +19,7 @@ export const SelectGame = () => {
   // const [gameId, setGameId] = useState<string>("");
   // const [gameData, setGameData] = useState<GameData>({ opponent: "", amount: "0" });
 
-  // const { data: deployedContractData } = useDeployedContractInfo("ScrollFighter");
+  // const { data: deployedContractData } = useDeployedContractInfo("ScrollFighterV2");
 
   // const fetchGameData = async () => {
   //   console.log("AVH gameid = " + gameId);
