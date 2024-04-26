@@ -44,6 +44,7 @@
     "@aztec/accounts": "^0.35.1",
     "@aztec/aztec.js": "^0.35.1",
     "@aztec/noir-contracts.js": "^0.35.1",
+    "@graphprotocol/graph-cli": "^0.71.0",
     "@openzeppelin/contracts": "^5.0.2",
     "@types/node": "^20.12.7",
     "@usedapp/core": "^1.2.13",

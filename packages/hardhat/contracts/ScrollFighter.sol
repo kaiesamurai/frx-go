@@ -65,7 +65,7 @@ contract ScrollFighter {
 		uint id;
 		uint wageredAmount;
 		address[2] players;
-		bytes32 challengerCommitment;
+		bytes challengerCommitment;
 		uint[2] fighterIds;
 		uint[3][2] moves; // Assumed to be 3 rounds of moves for 2 players
 		uint[3][2] pain;
@@ -104,7 +104,7 @@ contract ScrollFighter {
 	// GAME FUNCTIONS
 	function proposeGame(
 		address _opponent,
-		bytes32 hashCommitment,
+		bytes calldata proof,
 		uint _amount
 	) external {
 		require(
@@ -118,12 +118,16 @@ contract ScrollFighter {
 			"Transfer failed"
 		);
 
+		// Verify proof
+		bytes32[] memory publicInputs = new bytes32[](1);
+		require(verifier.verify(proof, publicInputs), "Invalid proof");
+
 		uint gameId = nextGameId++;
 		games[gameId] = Game({
 			id: gameId,
 			wageredAmount: amount,
 			players: [msg.sender, _opponent],
-			challengerCommitment: hashCommitment,
+			challengerCommitment: proof,
 			fighterIds: [uint(0), uint(0)],
 			moves: [[uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)]],
 			pain: [[uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)]],
@@ -196,12 +200,9 @@ contract ScrollFighter {
 		Game storage game = games[gameId];
 		require(msg.sender == game.players[0], "Only challenger can reveal");
 
-		// Verify proof
+		// Verify fighter and strategy
 		bytes32 hash = keccak256(abi.encodePacked(fighterID, moves, nonce));
 		require(hash == game.challengerCommitment, "Commitment mismatch");
-		bytes32[] memory publicInputs = new bytes32[](1);
-		publicInputs[0] = hash;
-		require(verifier.verify(proof, publicInputs), "Invalid proof");
 
 		// Reveal fighter
 		game.fighterIds[0] = fighterID;

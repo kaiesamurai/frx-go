@@ -1,6 +1,6 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { Contract } from "ethers";
+// import { Contract } from "ethers";
 // import deployedContracts from "../../nextjs/contracts/deployedContracts";
 
 /**
@@ -36,8 +36,8 @@ const deployScrollFighter: DeployFunction = async function (hre: HardhatRuntimeE
   });
 
   // Get the deployed contract to interact with it after deploying.
-  await hre.ethers.getContract<Contract>("ScrollFighter", deployer);
-  // console.log("👋 Initial greeting:", await contract.greeting());
+  // let tokenContract = await hre.ethers.getContract<Contract>("FightingTokens", deployer);
+  // console.log("👋 Initial greeting:", await tokenContract.approve(deployer.));
 };
 
 export default deployScrollFighter;

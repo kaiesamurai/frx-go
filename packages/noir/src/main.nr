@@ -1,3 +1,5 @@
+use dep::std;
+
 fn main(fighterID: Field, moves: [Field; 3], secret: Field) {
     assert(fighterID as u32 > 0);
     assert(fighterID as u32 < 100);
