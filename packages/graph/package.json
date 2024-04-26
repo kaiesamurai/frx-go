@@ -1,18 +1,8 @@
 {
-  "name": "scrollfighter",
-  "license": "UNLICENSED",
-  "scripts": {
-    "codegen": "graph codegen",
-    "build": "graph build",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ scrollfighter",
-    "create-local": "graph create --node http://localhost:8020/ scrollfighter",
-    "remove-local": "graph remove --node http://localhost:8020/ scrollfighter",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 scrollfighter",
-    "test": "graph test"
-  },
+  "name": "graph",
+  "packageManager": "yarn@3.2.3",
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.71.0",
-    "@graphprotocol/graph-ts": "0.32.0"
-  },
-  "devDependencies": { "matchstick-as": "0.5.0" }
+    "@graphprotocol/graph-cli": "^0.71.0",
+    "@graphprotocol/graph-ts": "^0.35.1"
+  }
 }
