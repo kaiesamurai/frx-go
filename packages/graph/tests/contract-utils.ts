@@ -6,7 +6,7 @@ import {
   GameEnded,
   GameEndedByTimeout,
   GameProposed
-} from "../generated/ScrollFighterV2/ScrollFighterV2"
+} from "../generated/Contract/Contract"
 
 export function createFightersRevealedEvent(
   gameId: BigInt,

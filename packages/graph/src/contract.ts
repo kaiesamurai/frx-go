@@ -4,7 +4,7 @@ import {
   GameEnded as GameEndedEvent,
   GameEndedByTimeout as GameEndedByTimeoutEvent,
   GameProposed as GameProposedEvent
-} from "../generated/ScrollFighterV2/ScrollFighterV2"
+} from "../generated/Contract/Contract"
 import {
   FightersRevealed,
   GameAccepted,

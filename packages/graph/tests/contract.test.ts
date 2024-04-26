@@ -8,9 +8,9 @@ import {
 } from "matchstick-as/assembly/index"
 import { BigInt, Address } from "@graphprotocol/graph-ts"
 import { FightersRevealed } from "../generated/schema"
-import { FightersRevealed as FightersRevealedEvent } from "../generated/ScrollFighterV2/ScrollFighterV2"
-import { handleFightersRevealed } from "../src/scroll-fighter-v-2"
-import { createFightersRevealedEvent } from "./scroll-fighter-v-2-utils"
+import { FightersRevealed as FightersRevealedEvent } from "../generated/Contract/Contract"
+import { handleFightersRevealed } from "../src/contract"
+import { createFightersRevealedEvent } from "./contract-utils"
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
