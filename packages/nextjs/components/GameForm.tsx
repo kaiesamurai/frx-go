@@ -191,13 +191,17 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
               </div>
               <div className="p-5 divide-y divide-base-300">
                 <h1 className="text-xl font-bold">Game Setup</h1>
-                <input
-                  type="text"
-                  placeholder="Enter Game ID to Load"
-                  value={gameId}
-                  onChange={handleGameIdChange}
-                  className="input input-bordered w-full max-w-xs"
-                />
+                {mode === "join" && (
+                  <>
+                    <input
+                      type="text"
+                      placeholder="Enter Game ID to Load"
+                      value={gameId}
+                      onChange={handleGameIdChange}
+                      className="input input-bordered w-full max-w-xs"
+                    />
+                  </>
+                )}
                 <label className="block">
                   Opponent Address:
                   <input
