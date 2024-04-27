@@ -6,7 +6,7 @@ const process = (await import("process")).default;
 const tar = (await import("tar")).default;
 
 // Make sure to provide your actual API key here.
-const SINDRI_API_KEY = process.env.SINDRI_API_KEY || "sindri_rpfTWgYpfDgszLXhAIwIjHoXY9RdxVPN_09hv";
+const SINDRI_API_KEY = "sindri_rpfTWgYpfDgszLXhAIwIjHoXY9RdxVPN_09hv";
 
 // Use v1 of the Sindri API.
 axios.defaults.baseURL = "https://sindri.app/api/v1";
@@ -14,7 +14,6 @@ axios.defaults.baseURL = "https://sindri.app/api/v1";
 axios.defaults.headers.common["Authorization"] = `Bearer ${SINDRI_API_KEY}`;
 // Expect 2xx responses for all requests.
 axios.defaults.validateStatus = (status) => status >= 200 && status < 300;
-
 
 // Create a new circuit.
 const formData = new FormData();
@@ -30,10 +29,8 @@ const createResponse = await axios.post(
   "/circuit/create",
   formData,
 );
-
 const circuitId = createResponse.data.circuit_id;
 console.log("Circuit ID:", circuitId);
-// wait for 10 seconds
 
 // Poll for completed status.
 let startTime = Date.now();
@@ -62,10 +59,7 @@ const package_name = circuitDetailResponse.data.nargo_package_name;
 
 
 // Generate a new proof and poll for completion.
-// todo: change the proofInput to the actual proof input
-
 const proofInput = "edgelist = [222, 331, 152, 294, 43, 270, 313, 278, 210, 383, 74, 22, 250, 317, 66, 169, 214, 385, 49, 337, 134, 5, 91, 1, 41, 299, 394, 160, 182, 299]";
-
 const proveResponse = await axios.post(`/circuit/${circuitId}/prove`, {
   proof_input: proofInput,
 });
