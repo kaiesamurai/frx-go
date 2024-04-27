@@ -1,0 +1,3 @@
+{
+  "4524bdd74b38d1d642bead367da058cd2b4fe42ec467eed4e167d5c9a2b474b9": "query ExampleQuery {\n  markets(first: 7) {\n    borrowRate\n    cash\n    collateralFactor\n  }\n  pair(id: \"0x00004ee988665cdda9a1080d5792cecd16dc1220\") {\n    id\n    token0 {\n      id\n      symbol\n      name\n    }\n    token1 {\n      id\n      symbol\n      name\n    }\n  }\n}"
+}

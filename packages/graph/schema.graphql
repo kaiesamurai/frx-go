@@ -55,7 +55,7 @@ type GameProposed @entity(immutable: true) {
 }
 
 type Game @entity {
-  id: BigInt! # uint256
+  id: Bytes! # uint256
   wageredAmount: BigInt! # uint256
   player1: Bytes! # address
   player2: Bytes! # address
@@ -66,4 +66,10 @@ type Game @entity {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+}
+
+type User @entity {
+  id: Bytes! # address
+  games_started: [Game!]! @derivedFrom(field: "player1")
+  games_joined: [Game!]! @derivedFrom(field: "player2")
 }

@@ -3,7 +3,8 @@ import {
   GameAccepted as GameAcceptedEvent,
   GameEnded as GameEndedEvent,
   GameEndedByTimeout as GameEndedByTimeoutEvent,
-  GameProposed as GameProposedEvent
+  GameProposed as GameProposedEvent,
+  Game as GameEntity
 } from "../generated/Contract/Contract"
 import {
   FightersRevealed,
@@ -82,6 +83,10 @@ export function handleGameProposed(event: GameProposedEvent): void {
   let entity = new GameProposed(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
+  let game = new GameEntity(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  // todo: add game entity fields
   entity.gameId = event.params.gameId
   entity.player1 = event.params.player1
   entity.player2 = event.params.player2
@@ -92,5 +97,6 @@ export function handleGameProposed(event: GameProposedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+  game.save()
 
 }

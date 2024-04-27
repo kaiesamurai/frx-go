@@ -21,6 +21,7 @@ dataSources:
         - GameEnded
         - GameEndedByTimeout
         - GameProposed
+        - Game
       abis:
         - name: Contract
           file: ./abis/Contract.json
