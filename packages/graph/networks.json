@@ -1,6 +1,6 @@
 {
   "scroll-sepolia": {
-    "Contract": {
+    "ScrollFighterV2": {
       "address": "0x4250f996882e56b0d0a2daddf3ea0bf9904fec5e",
       "startBlock": 4045133
     }

@@ -517,7 +517,7 @@ const deployedContracts = {
       },
     },
     ScrollFighter: {
-      address: "0x75836c1a9cf7B2b2bFa30F4d943169167828A964",
+      address: "0x58F83E4F3F693eBc4C4cf6bDae01b9725638Ea63",
       abi: [
         {
           inputs: [
@@ -812,9 +812,9 @@ const deployedContracts = {
                   type: "address[2]",
                 },
                 {
-                  internalType: "bytes32",
+                  internalType: "bytes",
                   name: "challengerCommitment",
-                  type: "bytes32",
+                  type: "bytes",
                 },
                 {
                   internalType: "uint256[2]",
@@ -881,9 +881,9 @@ const deployedContracts = {
               type: "address",
             },
             {
-              internalType: "bytes32",
-              name: "hashCommitment",
-              type: "bytes32",
+              internalType: "bytes",
+              name: "proof",
+              type: "bytes",
             },
             {
               internalType: "uint256",
@@ -933,7 +933,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     ScrollFighterV2: {
-      address: "0x4250F996882E56b0D0a2dAdDf3Ea0bF9904fec5e",
+      address: "0x4250f996882e56b0d0a2daddf3ea0bf9904fec5e",
       abi: [
         {
           inputs: [

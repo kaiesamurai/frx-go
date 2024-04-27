@@ -2,7 +2,11 @@
 
 // GameForm.tsx
 import React, { useEffect, useState } from "react";
+import circuit from "../../noir/target/scrollfighter.json";
 import { Fighter, fighters } from "./Fighters";
+import { BarretenbergBackend } from "@noir-lang/backend_barretenberg";
+import { Noir } from "@noir-lang/noir_js";
+import { CompiledCircuit } from "@noir-lang/types";
 import { formatUnits } from "viem";
 import { useAccount, useBalance, useReadContract, useWriteContract } from "wagmi";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
@@ -26,7 +30,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
   const [amount, setAmount] = useState<string>(initialAmount || "");
   const [opponent, setOpponent] = useState<string>(initialOpponentAddress || "");
   const { address, chain } = useAccount();
-  const contractName = "ScrollFighterV2";
+  const contractName = "ScrollFighter";
   const { data: deployedContractData } = useDeployedContractInfo(contractName);
 
   const tokenContractAddress = "0x64CDeB6CD5ecfB002bdaFabc98B5C883C5C06B27";
@@ -41,6 +45,18 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
   const { targetNetwork } = useTargetNetwork();
 
   const writeDisabled = !chain || chain?.id !== targetNetwork.id;
+
+  const setup = async () => {
+    // const [noircAbi, acvmJs] = await Promise.all([
+    await Promise.all([
+      import("@noir-lang/noirc_abi").then(module =>
+        module.default(new URL("@noir-lang/noirc_abi/web/noirc_abi_wasm_bg.wasm", import.meta.url).toString()),
+      ),
+      import("@noir-lang/acvm_js").then(module =>
+        module.default(new URL("@noir-lang/acvm_js/web/acvm_js_bg.wasm", import.meta.url).toString()),
+      ),
+    ]);
+  };
 
   const handleMoveChange = (index: number, move: Move): void => {
     console.log("special move used" + specialMoveUsed);
@@ -102,6 +118,9 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
   };
 
   const proposeGame = async () => {
+    const backend = new BarretenbergBackend(circuit as CompiledCircuit);
+    const noir = new Noir(circuit as CompiledCircuit, backend);
+
     if (writeContractAsync) {
       if (!deployedContractData?.abi || !deployedContractData?.address) {
         console.error("Contract data is not loaded.");
@@ -109,28 +128,24 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
       }
       try {
         // const bytes32Value = `0x4100000000000000000000000000000000000000000000000000000000000000`;
-
-        // \/ \/ \/ V2 LOGIC. REMOVE THIS WHEN USING V1 \/ \/ \/
         if (!selectedFighter) {
           console.error("No fighter selected");
           return;
         }
 
-        const moveIndices = selectedMoves.map(move => BigInt(moves.indexOf(move)));
-        if (moveIndices.length !== 3) {
-          console.error("Invalid number of moves selected");
-          return;
-        }
-        const fighterIdBigInt = BigInt(selectedFighter.id);
-        // /\ /\ /\ V2 LOGIC. REMOVE THIS WHEN USING V1 /\ /\ /\
+        const moveIndices = selectedMoves.map(move => moves.indexOf(move));
+        const secret = 1; // TODO: Generate a secret
+        const input = { fighterID: selectedFighter.id, moves: moveIndices, secret: secret };
+        await setup();
+        const proof = await noir.generateProof(input);
 
+        // Verify proof on-chain
         const makeWriteWithParams = () =>
           writeContractAsync({
             address: deployedContractData.address,
             functionName: "proposeGame",
             abi: deployedContractData.abi,
-            // args: [opponent, bytes32Value, BigInt(amount)],
-            args: [opponent, fighterIdBigInt, moveIndices as [bigint, bigint, bigint], BigInt(amount)],
+            args: [opponent, proof.proof.toString(), BigInt(amount)],
           });
         await writeTxn(makeWriteWithParams);
         // onChange();

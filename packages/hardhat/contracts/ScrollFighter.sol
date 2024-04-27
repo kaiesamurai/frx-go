@@ -24,6 +24,7 @@ contract ScrollFighter {
 		uint wageredAmount
 	);
 	event FightersRevealed(uint gameId, address player1, address player2);
+
 	event GameEnded(
 		uint gameId,
 		address player1,
@@ -201,8 +202,8 @@ contract ScrollFighter {
 		require(msg.sender == game.players[0], "Only challenger can reveal");
 
 		// Verify fighter and strategy
-		bytes32 hash = keccak256(abi.encodePacked(fighterID, moves, nonce));
-		require(hash == game.challengerCommitment, "Commitment mismatch");
+		// bytes32 hash = keccak256(abi.encodePacked(fighterID, moves, nonce));
+		// require(hash == game.challengerCommitment, "Commitment mismatch");
 
 		// Reveal fighter
 		game.fighterIds[0] = fighterID;

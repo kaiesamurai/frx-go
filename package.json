@@ -45,10 +45,13 @@
     "@aztec/aztec.js": "^0.35.1",
     "@aztec/noir-contracts.js": "^0.35.1",
     "@graphprotocol/graph-cli": "^0.71.0",
+    "@noir-lang/backend_barretenberg": "^0.28.0",
+    "@noir-lang/noir_js": "^0.28.0",
     "@openzeppelin/contracts": "^5.0.2",
     "@types/node": "^20.12.7",
     "@usedapp/core": "^1.2.13",
     "ethers": "^6.12.0",
+    "react-toastify": "^10.0.5",
     "typescript": "^5.4.5",
     "validator": "^13.11.0",
     "web3-validator": "^2.0.5"
