@@ -45,10 +45,10 @@ Due to the limited time, I could not complete everything I set out to do. Additi
 
 ### Verified smart contracts
 
-[ScrollFighter](https://sepolia.scrollscan.com/address/0x4A71867B2739F0976cCC950b643582CA94E6cA28#code)
-[ScrollFighterV2](https://sepolia.scrollscan.com/address/0x4250f996882e56b0d0a2daddf3ea0bf9904fec5e#code)
+[ScrollFighter](https://sepolia.scrollscan.com/address/0x841b974730da5501C9A6d4CA4479d789375e220E#code)
+[ScrollFighterV2](https://sepolia.scrollscan.com/address/0xC9728eD87F9fF73da7e27e18FEB560E52aa4bB3F#code)
 [FighterCoins](https://sepolia.scrollscan.com/address/0x64CDeB6CD5ecfB002bdaFabc98B5C883C5C06B27#code)
-[UltraVerifier](https://sepolia.scrollscan.com/address/0xc15BC025d57bec9FA39e18701b4f0b3b5a067B6C#code)
+[UltraVerifier](https://sepolia.scrollscan.com/address/0x4a2B33A77de8F69b8Cf913aafc6357f4Ce176105#code)
 
 ## Team
 

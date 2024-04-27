@@ -120,7 +120,7 @@ contract ScrollFighter {
 		);
 
 		// Verify proof
-		bytes32[] memory publicInputs = new bytes32[](1);
+		bytes32[] memory publicInputs = new bytes32[](0);
 		require(verifier.verify(proof, publicInputs), "Invalid proof");
 
 		uint gameId = nextGameId++;

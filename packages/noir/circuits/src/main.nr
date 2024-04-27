@@ -18,7 +18,7 @@ fn main(inputs: [Field; 5]) {
         assert(move as u32 > 0);
         assert(move as u32 < 4);
     }
-    let secret: Field = inputs[4];
+    // let secret: Field = inputs[4];
 }
 
 // #[test]

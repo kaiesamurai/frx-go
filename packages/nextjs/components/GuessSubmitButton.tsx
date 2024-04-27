@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import circuit from "../../noir/target/scrollfighter.json";
+import circuit from "../../noir/circuits/target/scrollfighter.json";
 import { BarretenbergBackend } from "@noir-lang/backend_barretenberg";
 import { Noir } from "@noir-lang/noir_js";
 import { CompiledCircuit } from "@noir-lang/types";
@@ -37,7 +37,7 @@ const GuessSubmitButton: React.FC = () => {
           const backend = new BarretenbergBackend(circuit as CompiledCircuit);
           const noir = new Noir(circuit as CompiledCircuit, backend);
           //   const inputElement = document.getElementById("guessInput") as HTMLInputElement;
-          const input = { fighterID: 1, moves: [1, 1, 1], secret: 1 };
+          const input = { inputs: [1, 1, 1, 1, 1] };
 
           await setup();
 

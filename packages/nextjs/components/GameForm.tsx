@@ -2,7 +2,7 @@
 
 // GameForm.tsx
 import React, { useEffect, useState } from "react";
-import circuit from "../../noir/target/scrollfighter.json";
+import circuit from "../../noir/circuits/target/scrollfighter.json";
 import { Fighter, fighters } from "./Fighters";
 import { BarretenbergBackend } from "@noir-lang/backend_barretenberg";
 import { Noir } from "@noir-lang/noir_js";
@@ -127,7 +127,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
         return;
       }
       try {
-        // const bytes32Value = `0x4100000000000000000000000000000000000000000000000000000000000000`;
+        const bytes32Value = `0x4100000000000000000000000000000000000000000000000000000000000000`;
         if (!selectedFighter) {
           console.error("No fighter selected");
           return;
@@ -135,9 +135,14 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
 
         const moveIndices = selectedMoves.map(move => moves.indexOf(move));
         const secret = 1; // TODO: Generate a secret
-        const input = { fighterID: selectedFighter.id, moves: moveIndices, secret: secret };
+        // const input = { fighterID: selectedFighter.id, moves: moveIndices, secret: secret };
+        const input = { inputs: [selectedFighter.id, moveIndices[0], moveIndices[1], moveIndices[2], secret] };
         await setup();
-        const proof = await noir.generateProof(input);
+        // const proof = await noir.generateProof(input);
+        await noir.generateProof(input);
+        // let byteString = Array.from(proof.proof)
+        //   .map(byte => byte.toString())
+        //   .join("");
 
         // Verify proof on-chain
         const makeWriteWithParams = () =>
@@ -145,7 +150,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
             address: deployedContractData.address,
             functionName: "proposeGame",
             abi: deployedContractData.abi,
-            args: [opponent, proof.proof.toString(), BigInt(amount)],
+            args: [opponent, bytes32Value, BigInt(amount)],
           });
         await writeTxn(makeWriteWithParams);
         // onChange();
