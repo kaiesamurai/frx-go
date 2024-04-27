@@ -92,4 +92,5 @@ export function handleGameProposed(event: GameProposedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+
 }

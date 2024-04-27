@@ -53,3 +53,17 @@ type GameProposed @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+
+type Game @entity {
+  id: BigInt! # uint256
+  wageredAmount: BigInt! # uint256
+  player1: Bytes! # address
+  player2: Bytes! # address
+  winner: Bytes! # address
+  fighterIds: [BigInt!]! # uint256
+  moves: [[BigInt!]!]! # uint256
+  state: String!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
