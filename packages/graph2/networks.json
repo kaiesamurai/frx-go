@@ -1,0 +1,8 @@
+{
+  "scroll-sepolia": {
+    "ScrollFighter": {
+      "address": "0x0f567534623A5715a8271235db4Ba58461154307",
+      "startBlock": 4114939
+    }
+  }
+}

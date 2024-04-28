@@ -517,7 +517,7 @@ const deployedContracts = {
       },
     },
     ScrollFighter: {
-      address: "0x58F83E4F3F693eBc4C4cf6bDae01b9725638Ea63",
+      address: "0x0f567534623A5715a8271235db4Ba58461154307",
       abi: [
         {
           inputs: [
@@ -555,6 +555,30 @@ const deployedContracts = {
               internalType: "address",
               name: "player2",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "fighter1",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "fighter2",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256[3]",
+              name: "moves1",
+              type: "uint256[3]",
+            },
+            {
+              indexed: false,
+              internalType: "uint256[3]",
+              name: "moves2",
+              type: "uint256[3]",
             },
           ],
           name: "FightersRevealed",
@@ -617,6 +641,18 @@ const deployedContracts = {
               internalType: "address",
               name: "winner",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256[3]",
+              name: "pain1",
+              type: "uint256[3]",
+            },
+            {
+              indexed: false,
+              internalType: "uint256[3]",
+              name: "pain2",
+              type: "uint256[3]",
             },
             {
               indexed: false,
@@ -933,7 +969,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     ScrollFighterV2: {
-      address: "0x4250f996882e56b0d0a2daddf3ea0bf9904fec5e",
+      address: "0xC9728eD87F9fF73da7e27e18FEB560E52aa4bB3F",
       abi: [
         {
           inputs: [
@@ -1321,7 +1357,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     UltraVerifier: {
-      address: "0xc15BC025d57bec9FA39e18701b4f0b3b5a067B6C",
+      address: "0x4a2B33A77de8F69b8Cf913aafc6357f4Ce176105",
       abi: [
         {
           inputs: [],

@@ -3,6 +3,10 @@ type FightersRevealed @entity(immutable: true) {
   gameId: BigInt! # uint256
   player1: Bytes! # address
   player2: Bytes! # address
+  fighter1: BigInt! # uint256
+  fighter2: BigInt! # uint256
+  moves1: [BigInt!]! # uint256[3]
+  moves2: [BigInt!]! # uint256[3]
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -25,6 +29,8 @@ type GameEnded @entity(immutable: true) {
   player1: Bytes! # address
   player2: Bytes! # address
   winner: Bytes! # address
+  pain1: [BigInt!]! # uint256[3]
+  pain2: [BigInt!]! # uint256[3]
   wageredAmount: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
@@ -52,24 +58,4 @@ type GameProposed @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
-}
-
-type Game @entity {
-  id: Bytes!
-  gameId: BigInt! # uint256
-  wageredAmount: BigInt! # uint256
-  players: [Bytes!]! # address
-  winner: Bytes! # address
-  fighterIds: [BigInt!]! # uint256
-  moves: [[BigInt!]!]! # uint256
-  state: String!
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type User @entity {
-  id: Bytes! # address
-  # games_started: [Game!]! @derivedFrom(field: "player1")
-  # games_joined: [Game!]! @derivedFrom(field: "player2")
 }

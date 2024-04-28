@@ -23,13 +23,23 @@ contract ScrollFighter {
 		address player2,
 		uint wageredAmount
 	);
-	event FightersRevealed(uint gameId, address player1, address player2);
+	event FightersRevealed(
+		uint gameId,
+		address player1,
+		address player2,
+		uint fighter1,
+		uint fighter2,
+		uint[3] moves1,
+		uint[3] moves2
+	);
 
 	event GameEnded(
 		uint gameId,
 		address player1,
 		address player2,
 		address winner,
+		uint[3] pain1,
+		uint[3] pain2,
 		uint wageredAmount
 	);
 	event GameEndedByTimeout(
@@ -209,7 +219,15 @@ contract ScrollFighter {
 		game.fighterIds[0] = fighterID;
 		game.moves[0] = moves;
 		game.gameState = GameState.STARTED;
-		emit FightersRevealed(gameId, game.players[0], game.players[1]);
+		emit FightersRevealed(
+			gameId,
+			game.players[0],
+			game.players[1],
+			fighterID,
+			game.fighterIds[1],
+			moves,
+			game.moves[1]
+		);
 		playGame(gameId);
 	}
 
@@ -263,6 +281,8 @@ contract ScrollFighter {
 			game.winner,
 			game.players[0],
 			game.players[1],
+			game.pain[0],
+			game.pain[1],
 			game.wageredAmount
 		);
 	}
