@@ -193,7 +193,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
           await new Promise(resolve => setTimeout(resolve, 1000));
         }
 
-        let commitment_hash = generateHash(selectedFighter.id, selectedMoves, secret.toString());
+        const commitment_hash = generateHash(selectedFighter.id, selectedMoves, secret.toString());
         console.log(commitment_hash);
         // Verify proof on-chain
         const makeWriteWithParams = () =>

@@ -7,11 +7,11 @@ import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 
 const convertMoveToAction = (move: bigint): string => {
   switch (move) {
-    case BigInt(0):
-      return "attack";
     case BigInt(1):
-      return "defend";
+      return "attack";
     case BigInt(2):
+      return "defend";
+    case BigInt(3):
       return "specialMove";
     default:
       return "idle";
