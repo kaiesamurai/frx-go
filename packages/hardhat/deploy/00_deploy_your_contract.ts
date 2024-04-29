@@ -28,7 +28,7 @@ const deployScrollFighter: DeployFunction = async function (hre: HardhatRuntimeE
     from: deployer,
     // Contract constructor arguments
     // args: [verifier_contract_address],
-    args: ["0xD61F9a49392f4ebBff671177A6262a7cC6011304", "0x64CDeB6CD5ecfB002bdaFabc98B5C883C5C06B27"],
+    args: ["0x06cA44b817F9172e1BaB3a8e8a36020AeC6D7e8d", "0x64CDeB6CD5ecfB002bdaFabc98B5C883C5C06B27"],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.

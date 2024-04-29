@@ -517,7 +517,7 @@ const deployedContracts = {
       },
     },
     ScrollFighter: {
-      address: "0x05eBd4C79Cb51f195651Ae6168120c0707A4db3e",
+      address: "0xbb33edd5DE81a407054F019706015DaC0ff9A9cA",
       abi: [
         {
           inputs: [
@@ -969,7 +969,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     ScrollFighterV2: {
-      address: "0x28d0683Ae04aD3b78929f32DccE70001FA146689",
+      address: "0x1626edD6c1cb26052FeB7C10183B72237902865f",
       abi: [
         {
           inputs: [
@@ -1357,11 +1357,11 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     UltraVerifier: {
-      address: "0xD61F9a49392f4ebBff671177A6262a7cC6011304",
+      address: "0x06cA44b817F9172e1BaB3a8e8a36020AeC6D7e8d",
       abi: [
         {
           inputs: [],
-          name: "INVALID_VERIFICATION_KEY",
+          name: "EC_SCALAR_MUL_FAILURE",
           type: "error",
         },
         {
@@ -1371,22 +1371,7 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "OPENING_COMMITMENT_FAILED",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "PAIRING_FAILED",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "PAIRING_PREAMBLE_FAILED",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "POINT_NOT_ON_CURVE",
+          name: "PROOF_FAILURE",
           type: "error",
         },
         {

@@ -32,6 +32,8 @@ export function handleFightersRevealed(event: FightersRevealedEvent): void {
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
 
+
+  // For now only save games that are started because I didn't figure out yet how to update the state of an existing game entity
   entity.save()
 
     let gameEntity = new GameEntity(

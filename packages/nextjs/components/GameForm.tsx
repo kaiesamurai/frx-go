@@ -2,11 +2,12 @@
 
 // GameForm.tsx
 import React, { useEffect, useState } from "react";
-import circuit from "../../noir/circuits/target/scrollfighter.json";
+// import circuit from "../../noir/circuits/target/scrollfighter.json";
 import { Fighter, fighters } from "./Fighters";
-import { BarretenbergBackend } from "@noir-lang/backend_barretenberg";
-import { Noir } from "@noir-lang/noir_js";
-import { CompiledCircuit } from "@noir-lang/types";
+// import { BarretenbergBackend } from "@noir-lang/backend_barretenberg";
+// import { Noir } from "@noir-lang/noir_js";
+// import { CompiledCircuit } from "@noir-lang/types";
+import axios from "axios";
 import { formatUnits } from "viem";
 import { useAccount, useBalance, useReadContract, useWriteContract } from "wagmi";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
@@ -27,6 +28,14 @@ type Move = (typeof moves)[number];
 export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFormProps) => {
   const writeTxn = useTransactor();
 
+  // sindri
+  // const SINDRI_API_KEY = process.env.SINDRI_API_KEY || "";
+  const SINDRI_API_KEY = "sindri_rpfTWgYpfDgszLXhAIwIjHoXY9RdxVPN_09hv";
+
+  axios.defaults.baseURL = "https://sindri.app/api/v1";
+  axios.defaults.headers.common["Authorization"] = `Bearer ${SINDRI_API_KEY}`;
+  axios.defaults.validateStatus = status => status >= 200 && status < 300;
+
   const [amount, setAmount] = useState<string>(initialAmount || "");
   const [opponent, setOpponent] = useState<string>(initialOpponentAddress || "");
   const { address, chain } = useAccount();
@@ -46,20 +55,20 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
 
   const writeDisabled = !chain || chain?.id !== targetNetwork.id;
 
-  const setup = async () => {
-    // const [noircAbi, acvmJs] = await Promise.all([
-    await Promise.all([
-      import("@noir-lang/noirc_abi").then(module =>
-        module.default(new URL("@noir-lang/noirc_abi/web/noirc_abi_wasm_bg.wasm", import.meta.url).toString()),
-      ),
-      import("@noir-lang/acvm_js").then(module =>
-        module.default(new URL("@noir-lang/acvm_js/web/acvm_js_bg.wasm", import.meta.url).toString()),
-      ),
-    ]);
-  };
-  function uint8ArrayToHex(array: Uint8Array): string {
-    return Array.from(array, byte => byte.toString(16).padStart(2, "0")).join("");
-  }
+  // const setup = async () => {
+  //   // const [noircAbi, acvmJs] = await Promise.all([
+  //   await Promise.all([
+  //     import("@noir-lang/noirc_abi").then(module =>
+  //       module.default(new URL("@noir-lang/noirc_abi/web/noirc_abi_wasm_bg.wasm", import.meta.url).toString()),
+  //     ),
+  //     import("@noir-lang/acvm_js").then(module =>
+  //       module.default(new URL("@noir-lang/acvm_js/web/acvm_js_bg.wasm", import.meta.url).toString()),
+  //     ),
+  //   ]);
+  // };
+  // function uint8ArrayToHex(array: Uint8Array): string {
+  //   return Array.from(array, byte => byte.toString(16).padStart(2, "0")).join("");
+  // }
 
   const handleMoveChange = (index: number, move: Move): void => {
     setSelectedMoves(prevMoves => {
@@ -119,8 +128,8 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
   };
 
   const proposeGame = async () => {
-    const backend = new BarretenbergBackend(circuit as CompiledCircuit);
-    const noir = new Noir(circuit as CompiledCircuit, backend);
+    // const backend = new BarretenbergBackend(circuit as CompiledCircuit);
+    // const noir = new Noir(circuit as CompiledCircuit, backend);
 
     if (writeContractAsync) {
       if (!deployedContractData?.abi || !deployedContractData?.address) {
@@ -136,18 +145,55 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
         const moveIndices = selectedMoves.map(move => moves.indexOf(move) + 1);
         console.log("moveIndices", moveIndices);
         const secret = 1; // TODO: Generate a secret
-        const input = { fighterID: selectedFighter.id, moves: moveIndices, secret: secret };
-        await setup();
-        const proof = await noir.generateProof(input);
-        const hexProof = uint8ArrayToHex(proof.proof);
 
+        // const input = { fighterID: selectedFighter.id, moves: moveIndices, secret: secret };
+        // await setup();
+        // const proof = await noir.generateProof(input);
+        // const hexProof = uint8ArrayToHex(proof.proof);
+
+        // SINDRI
+        const proofInput = JSON.stringify({
+          fighterID: selectedFighter.id,
+          moves: moveIndices,
+          secret: secret,
+        });
+
+        const circuitId = "21990165-2224-4446-8887-1261482ec5cd";
+
+        console.log("proving ", proofInput);
+        const proveResponse = await axios.post(`/circuit/${circuitId}/prove`, {
+          proof_input: proofInput,
+        });
+        console.log("proveResponse", proveResponse);
+        const proofId = proveResponse.data.proof_id;
+        const startTime = Date.now();
+        // @ts-ignore
+        let proofDetailResponse;
+
+        while (true) {
+          // @ts-ignore
+          proofDetailResponse = await axios.get(`/proof/${proofId}/detail`);
+          const { status } = proofDetailResponse.data;
+          const elapsedSeconds = ((Date.now() - startTime) / 1000).toFixed(1);
+          if (status === "Ready") {
+            console.log(`Polling succeeded after ${elapsedSeconds} seconds.`);
+            break;
+          } else if (status === "Failed") {
+            throw new Error(`Polling failed after ${elapsedSeconds} seconds: ${proofDetailResponse.data.error}.`);
+          } else if (Date.now() - startTime > 30 * 60 * 1000) {
+            throw new Error("Timed out after 30 minutes.");
+          }
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
         // Verify proof on-chain
         const makeWriteWithParams = () =>
           writeContractAsync({
             address: deployedContractData.address,
             functionName: "proposeGame",
             abi: deployedContractData.abi,
-            args: [opponent, "0x" + hexProof, BigInt(amount)],
+            // @ts-ignore
+
+            args: [opponent, "0x" + proofDetailResponse.data.proof.proof, BigInt(amount)],
           });
         await writeTxn(makeWriteWithParams);
         // onChange();

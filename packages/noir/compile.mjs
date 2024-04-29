@@ -31,7 +31,9 @@ const createResponse = await axios.post(
   formData,
 );
 
-const circuitId = createResponse.data.circuit_id;
+// const circuitId = createResponse.data.circuit_id;
+const circuitId = "21990165-2224-4446-8887-1261482ec5cd";
+
 console.log("Circuit ID:", circuitId);
 
 // Poll for completed status.
@@ -61,14 +63,22 @@ const package_name = circuitDetailResponse.data.nargo_package_name;
 
 
 // Generate a new proof and poll for completion.
-
-const proofInput = "inputs = [1, 1, 1, 1, 1]";
+const proofInput = JSON.stringify({
+  "fighterID": 1,
+  "moves": [1, 2, 3],
+  "secret": 1
+});
+console.log("proving ", proofInput);
 
 const proveResponse = await axios.post(`/circuit/${circuitId}/prove`, {
   proof_input: proofInput,
 });
+// console.log("proveResponse", proveResponse);
+
 const proofId = proveResponse.data.proof_id;
 console.log("Proof ID:", proofId);
+// wait 10 seconds
+await new Promise((resolve) => setTimeout(resolve, 10000));
 startTime = Date.now();
 let proofDetailResponse;
 while (true) {

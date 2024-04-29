@@ -3,7 +3,7 @@ use dep::std;
 fn main(fighterID: Field, moves: [Field; 3], secret: Field) {
     assert(fighterID as u32 > 0);
     assert(fighterID as u32 < 4);
-    let mut count_special = 0;
+    let mut count_special: u32 = 0;
     for move in moves {
         assert(move as u32 > 0);
         assert(move as u32 < 4);
