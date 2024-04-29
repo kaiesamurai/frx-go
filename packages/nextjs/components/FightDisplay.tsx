@@ -24,6 +24,8 @@ export const FightDisplay: React.FC = () => {
   const [showRoundAnnouncement, setShowRoundAnnouncement] = useState<boolean>(false);
   const [gameLoaded, setGameLoaded] = useState<boolean>(false);
   const [gameId, setGameId] = useState<string>("");
+  const [playerOneHealth, setPlayerOneHealth] = useState<number>(0);
+  const [playerTwoHealth, setPlayerTwoHealth] = useState<number>(0);
   const contractName = "ScrollFighter";
 
   const { data: deployedContractData } = useDeployedContractInfo(contractName);
@@ -69,8 +71,8 @@ export const FightDisplay: React.FC = () => {
         setShowRoundAnnouncement(false);
         setTimeout(() => {
           playRound(round + 1);
-        }, 3000); // Duration of action before next round starts
-      }, 2000); // Duration to show round announcement
+        }, 2000); // Duration of action before next round starts
+      }, 1000); // Duration to show round announcement
     } else {
       setPlayFight(false); // End the fight
     }
@@ -78,6 +80,9 @@ export const FightDisplay: React.FC = () => {
 
   useEffect(() => {
     if (playFight) {
+      setPlayerOneHealth(Number(fighters.find(f => f.id === Number(gameData?.fighterIds[0]))!.health));
+      setPlayerTwoHealth(Number(fighters.find(f => f.id === Number(gameData?.fighterIds[1]))!.health));
+
       playRound(0);
     }
   }, [playFight]);
@@ -92,6 +97,10 @@ export const FightDisplay: React.FC = () => {
       setGameLoaded(true);
     }
     console.log("Game data", gameData);
+    if (gameData) {
+      // setPlayerOneHealth(Number(fighters.find(f => f.id === Number(gameData?.fighterIds[0]))!.health));
+      // setPlayerTwoHealth(Number(fighters.find(f => f.id === Number(gameData?.fighterIds[1]))!.health));
+    }
   }, [gameId, gameData, isGameLoading]);
 
   return (
@@ -154,8 +163,8 @@ export const FightDisplay: React.FC = () => {
                     backgroundColor: "red",
                     height: "10px",
                     width: `${
-                      // (100 * Number(gameData.currentHealth[0])) /
-                      fighters.find(f => f.id === Number(gameData.fighterIds[0]))!.health * 5
+                      (40 * Number(playerOneHealth)) /
+                      fighters.find(f => f.id === Number(gameData.fighterIds[0]))!.health
                     }%`,
                     margin: "0 10px",
                   }}
@@ -165,8 +174,8 @@ export const FightDisplay: React.FC = () => {
                     backgroundColor: "red",
                     height: "10px",
                     width: `${
-                      // (100 * Number(gameData.currentHealth[1])) /
-                      fighters.find(f => f.id === Number(gameData.fighterIds[1]))!.health * 5
+                      (40 * Number(playerTwoHealth)) /
+                      fighters.find(f => f.id === Number(gameData.fighterIds[1]))!.health
                     }%`,
                     margin: "0 10px",
                   }}
@@ -206,13 +215,18 @@ export const FightDisplay: React.FC = () => {
             </>
           )}
         </div>
-        {gameData && (
+        {gameLoaded && gameData && Number(gameData.fighterIds[0]) != 0 && Number(gameData.fighterIds[1]) != 0 && (
           <div style={{ marginTop: "20px", fontSize: "16px" }}>
-            <p>Results: {gameData?.winner}</p>
-            <strong>Wagered Amount:</strong> {gameData.wageredAmount.toString()} ETH
+            <p>
+              <strong>Winner:</strong> {gameData?.winner == gameData?.players[0] && "PLAYER ONE"}
+              {gameData?.winner == gameData?.players[1] && "PLAYER TWO"}
+              {gameData?.winner == "0x0000000000000000000000000000000000000000" && "DRAW"}
+            </p>
+            <p>
+              <strong>Wagered Amount:</strong> {(gameData.wageredAmount / BigInt(10n ** 18n)).toString()}
+            </p>
           </div>
         )}{" "}
-        {/* other parts of the component */}{" "}
       </div>
     </div>
   );
