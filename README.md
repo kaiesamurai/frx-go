@@ -37,7 +37,7 @@ Scroll Fighter uses Noir and Sindri to generate proofs using the Sindri API. A v
 
 ### The Graph
 
-A subgraph is created to query created games on the ScrollFighter contract. Check out the games tab to see a nice overview of games that are retrieved from the subgraph. Please check out the screenshot above to see the games overview. It's not in the demo video, because I completed this part very last minute.
+A subgraph is created to query created games on the ScrollFighter contract. Check out the games tab to see a nice overview of games that are retrieved from the subgraph. Please check out the screenshot above to see the games overview (it's not part of the demo video, because I completed this part very last minute).
 
 - [Subgraph code](https://github.com/arjanjohan/scroll-fighter/tree/main/packages/graph).
 - [Subgraph endpoint](https://api.studio.thegraph.com/query/72991/scrollfighter/version/latest)
