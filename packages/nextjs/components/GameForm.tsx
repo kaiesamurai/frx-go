@@ -57,9 +57,11 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
       ),
     ]);
   };
+  function uint8ArrayToHex(array: Uint8Array): string {
+    return Array.from(array, byte => byte.toString(16).padStart(2, "0")).join("");
+  }
 
   const handleMoveChange = (index: number, move: Move): void => {
-    console.log("special move used" + specialMoveUsed);
     setSelectedMoves(prevMoves => {
       const newMoves = [...prevMoves];
       const currentMove = newMoves[index];
@@ -68,7 +70,6 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
 
       // Handling special move selection
       if (isSpecialMove && specialMoveUsed && currentMove !== "Special") {
-        console.log("alert");
         alert("Special move can only be used once per game.");
         return newMoves; // Return previous state if change is invalid
       }
@@ -127,22 +128,18 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
         return;
       }
       try {
-        const bytes32Value = `0x4100000000000000000000000000000000000000000000000000000000000000`;
         if (!selectedFighter) {
           console.error("No fighter selected");
           return;
         }
 
-        const moveIndices = selectedMoves.map(move => moves.indexOf(move));
+        const moveIndices = selectedMoves.map(move => moves.indexOf(move) + 1);
+        console.log("moveIndices", moveIndices);
         const secret = 1; // TODO: Generate a secret
-        // const input = { fighterID: selectedFighter.id, moves: moveIndices, secret: secret };
-        const input = { inputs: [selectedFighter.id, moveIndices[0], moveIndices[1], moveIndices[2], secret] };
+        const input = { fighterID: selectedFighter.id, moves: moveIndices, secret: secret };
         await setup();
-        // const proof = await noir.generateProof(input);
-        await noir.generateProof(input);
-        // let byteString = Array.from(proof.proof)
-        //   .map(byte => byte.toString())
-        //   .join("");
+        const proof = await noir.generateProof(input);
+        const hexProof = uint8ArrayToHex(proof.proof);
 
         // Verify proof on-chain
         const makeWriteWithParams = () =>
@@ -150,7 +147,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
             address: deployedContractData.address,
             functionName: "proposeGame",
             abi: deployedContractData.abi,
-            args: [opponent, bytes32Value, BigInt(amount)],
+            args: [opponent, "0x" + hexProof, BigInt(amount)],
           });
         await writeTxn(makeWriteWithParams);
         // onChange();

@@ -1,1 +1,3 @@
-inputs = [1,1,1,1,1]
+fighterID = "1"
+moves = ["1", "1", "1"]
+secret = "1"

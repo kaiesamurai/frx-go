@@ -517,7 +517,7 @@ const deployedContracts = {
       },
     },
     ScrollFighter: {
-      address: "0x0f567534623A5715a8271235db4Ba58461154307",
+      address: "0x05eBd4C79Cb51f195651Ae6168120c0707A4db3e",
       abi: [
         {
           inputs: [
@@ -969,7 +969,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     ScrollFighterV2: {
-      address: "0xC9728eD87F9fF73da7e27e18FEB560E52aa4bB3F",
+      address: "0x28d0683Ae04aD3b78929f32DccE70001FA146689",
       abi: [
         {
           inputs: [
@@ -1357,7 +1357,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     UltraVerifier: {
-      address: "0x4a2B33A77de8F69b8Cf913aafc6357f4Ce176105",
+      address: "0xD61F9a49392f4ebBff671177A6262a7cC6011304",
       abi: [
         {
           inputs: [],
