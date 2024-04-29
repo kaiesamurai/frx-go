@@ -10,7 +10,10 @@ import {
   GameAccepted,
   GameEnded,
   GameEndedByTimeout,
-  GameProposed
+  GameProposed,
+  Game as GameEntity
+  // User as UserEntity,
+  // Fighter as FighterEntity
 } from "../generated/schema"
 
 export function handleFightersRevealed(event: FightersRevealedEvent): void {
@@ -30,6 +33,16 @@ export function handleFightersRevealed(event: FightersRevealedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+
+    let gameEntity = new GameEntity(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )  
+  gameEntity.gameId = event.params.gameId
+  gameEntity.players = [event.params.player1, event.params.player2]
+  gameEntity.state = "STARTED"
+  gameEntity.blockNumber = event.block.number
+
+  gameEntity.save()
 }
 
 export function handleGameAccepted(event: GameAcceptedEvent): void {
@@ -46,6 +59,15 @@ export function handleGameAccepted(event: GameAcceptedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+  
+  // // TODO: Retrieve game entity and update state
+  // let gameEntity = new GameEntity(
+  //   event.transaction.hash.concatI32(event.logIndex.toI32())
+  // )  
+  // gameEntity.state = "ACCEPTED"
+  // gameEntity.blockNumber = event.block.number
+
+  // gameEntity.save()
 }
 
 export function handleGameEnded(event: GameEndedEvent): void {
@@ -84,6 +106,7 @@ export function handleGameEndedByTimeout(event: GameEndedByTimeoutEvent): void {
   entity.save()
 }
 
+
 export function handleGameProposed(event: GameProposedEvent): void {
   let entity = new GameProposed(
     event.transaction.hash.concatI32(event.logIndex.toI32())
@@ -96,6 +119,17 @@ export function handleGameProposed(event: GameProposedEvent): void {
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
-
   entity.save()
+
+  // let gameEntity = new GameEntity(
+  //   event.transaction.hash.concatI32(event.logIndex.toI32())
+  // )  
+  // gameEntity.gameId = event.params.gameId
+  // gameEntity.players = [event.params.player1, event.params.player2]
+  // gameEntity.wageredAmount = event.params.wageredAmount
+  // gameEntity.state = "PROPOSED"
+  // gameEntity.blockNumber = event.block.number
+
+  // gameEntity.save()
+
 }
