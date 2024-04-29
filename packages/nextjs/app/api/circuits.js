@@ -1,7 +1,6 @@
 import axios from 'axios';
 import FormData from 'form-data';
 import tar from 'tar';
-import fs from 'fs';
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
