@@ -3,10 +3,10 @@ sources:
   - name: scrollfighter
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/72991/scrollfighter/v0.1
+        endpoint: https://api.studio.thegraph.com/query/72991/scrollfighter/v0.8
   - name: compoundv2
     handler:
       graphql:
         endpoint: https://api.thegraph.com/subgraphs/name/graphprotocol/compound-v2
-# documents:
-#   - ./src/example-query.graphql
+documents:
+  - ./src/games-query.graphql

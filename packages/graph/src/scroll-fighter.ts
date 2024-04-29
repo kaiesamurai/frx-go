@@ -12,8 +12,7 @@ import {
   GameEndedByTimeout,
   GameProposed,
   Game as GameEntity
-  // User as UserEntity,
-  // Fighter as FighterEntity
+
 } from "../generated/schema"
 
 export function handleFightersRevealed(event: FightersRevealedEvent): void {
@@ -43,6 +42,8 @@ export function handleFightersRevealed(event: FightersRevealedEvent): void {
   gameEntity.players = [event.params.player1, event.params.player2]
   gameEntity.state = "STARTED"
   gameEntity.blockNumber = event.block.number
+  gameEntity.fighterIds = [event.params.fighter1, event.params.fighter2]
+  // gameEntity.moves = [event.params.moves1, event.params.moves2]
 
   gameEntity.save()
 }
@@ -61,7 +62,6 @@ export function handleGameAccepted(event: GameAcceptedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  
   // // TODO: Retrieve game entity and update state
   // let gameEntity = new GameEntity(
   //   event.transaction.hash.concatI32(event.logIndex.toI32())
@@ -108,7 +108,6 @@ export function handleGameEndedByTimeout(event: GameEndedByTimeoutEvent): void {
   entity.save()
 }
 
-
 export function handleGameProposed(event: GameProposedEvent): void {
   let entity = new GameProposed(
     event.transaction.hash.concatI32(event.logIndex.toI32())
@@ -121,6 +120,7 @@ export function handleGameProposed(event: GameProposedEvent): void {
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
+
   entity.save()
 
   // let gameEntity = new GameEntity(
@@ -133,5 +133,4 @@ export function handleGameProposed(event: GameProposedEvent): void {
   // gameEntity.blockNumber = event.block.number
 
   // gameEntity.save()
-
 }

@@ -1,0 +1,8 @@
+query GamesQuery {{
+  games(first: 5) {
+    gameId,
+    players,
+    fighterIds,
+    state,
+  }
+}}

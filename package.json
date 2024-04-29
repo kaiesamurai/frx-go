@@ -36,16 +36,19 @@
   },
   "packageManager": "yarn@3.2.3",
   "devDependencies": {
+    "@graphprotocol/client-cli": "^3.0.1",
     "@types/validator": "^13",
     "@types/web3": "^1.2.2",
     "husky": "^8.0.1",
-    "lint-staged": "^13.0.3"
+    "lint-staged": "^13.0.3",
+    "matchstick-as": "0.5.0"
   },
   "dependencies": {
     "@aztec/accounts": "^0.35.1",
     "@aztec/aztec.js": "^0.35.1",
     "@aztec/noir-contracts.js": "^0.35.1",
-    "@graphprotocol/graph-cli": "^0.71.0",
+    "@graphprotocol/graph-cli": "0.71.0",
+    "@graphprotocol/graph-ts": "^0.35.1",
     "@noir-lang/backend_barretenberg": "0.27.0",
     "@noir-lang/noir_js": "v0.27.0",
     "@openzeppelin/contracts": "^5.0.2",

@@ -8,9 +8,9 @@ dataSources:
     name: ScrollFighter
     network: scroll-sepolia
     source:
-      address: "0xbb33edd5DE81a407054F019706015DaC0ff9A9cA"
+      address: "0x16d4fAD899F2c925AB3e7293F081545Dd08d73B6"
       abi: ScrollFighter
-      startBlock: 4144775
+      startBlock: 4149044
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -22,7 +22,6 @@ dataSources:
         - GameEndedByTimeout
         - GameProposed
         - Game
-        - User
       abis:
         - name: ScrollFighter
           file: ./abis/ScrollFighter.json
