@@ -5,12 +5,12 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: Contract
+    name: ScrollFighter
     network: scroll-sepolia
     source:
-      address: "0x4250f996882e56b0d0a2daddf3ea0bf9904fec5e"
-      abi: Contract
-      startBlock: 4045133
+      address: "0x0f567534623A5715a8271235db4Ba58461154307"
+      abi: ScrollFighter
+      startBlock: 4114939
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -22,18 +22,20 @@ dataSources:
         - GameEndedByTimeout
         - GameProposed
         - Game
+        - User
+
       abis:
-        - name: Contract
-          file: ./abis/Contract.json
+        - name: ScrollFighter
+          file: ./abis/ScrollFighter.json
       eventHandlers:
-        - event: FightersRevealed(uint256,address,address)
+        - event: FightersRevealed(uint256,address,address,uint256,uint256,uint256[3],uint256[3])
           handler: handleFightersRevealed
         - event: GameAccepted(uint256,address,address,uint256)
           handler: handleGameAccepted
-        - event: GameEnded(uint256,address,address,address,uint256)
+        - event: GameEnded(uint256,address,address,address,uint256[3],uint256[3],uint256)
           handler: handleGameEnded
         - event: GameEndedByTimeout(uint256,address,address,address,uint256)
           handler: handleGameEndedByTimeout
         - event: GameProposed(uint256,address,address,uint256)
           handler: handleGameProposed
-      file: ./src/contract.ts
+      file: ./src/scroll-fighter.ts
