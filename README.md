@@ -9,6 +9,16 @@
 
 ⚙️ Built on Scroll, Aztec, The Graph and NextJS.
 
+## Screenshots
+
+| Landing Page                                   | Create Game                              |
+| ---------------------------------------------- | ---------------------------------------- |
+| ![Landing Page](screenshots/1-landingpage.png) | ![Create Page](screenshots/2-create.png) |
+
+| Games Overview                         | Play Game                            |
+| -------------------------------------- | ------------------------------------ |
+| ![Games Page](screenshots/3-games.png) | ![Play Page](screenshots/5-play.png) |
+
 ## Partner Bounties
 
 ### Aztec
@@ -27,10 +37,11 @@ Scroll Fighter uses Sindri to generate proofs using their API.
 
 ### The Graph
 
-A subgraph is created to query created games on the ScrollFighter contract.
+A subgraph is created to query created games on the ScrollFighter contract. Check out the games tab to see a nice overview of games that are retrieved from the subgraph. (It's not in the demo video because I did not have time to redo the video after completing this component)
 
 - [Subgraph code](https://github.com/arjanjohan/scroll-fighter/tree/main/packages/graph).
 - [Subgraph endpoint](https://api.studio.thegraph.com/query/72991/scrollfighter/version/latest)
+- [Games page]
 
 ### Ankr
 

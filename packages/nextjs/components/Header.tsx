@@ -24,6 +24,10 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/create",
   },
   {
+    label: "Games",
+    href: "/games",
+  },
+  {
     label: "Join Game",
     href: "/join",
   },
