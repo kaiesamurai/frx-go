@@ -41,7 +41,8 @@ A subgraph is created to query created games on the ScrollFighter contract. Chec
 
 - [Subgraph code](https://github.com/arjanjohan/scroll-fighter/tree/main/packages/graph).
 - [Subgraph endpoint](https://api.studio.thegraph.com/query/72991/scrollfighter/version/latest)
-- [Games Overview page](https://github.com/arjanjohan/scroll-fighter/tree/3b7dd99d66a4344f5cfbd80556526ac1181fb7a9/packages/nextjs/app/games)
+- [Games overview on Vercel](https://scrollfighter.vercel.app/games)
+- [Games overview on Github](https://github.com/arjanjohan/scroll-fighter/tree/3b7dd99d66a4344f5cfbd80556526ac1181fb7a9/packages/nextjs/app/games)
 
 ### Ankr
 
