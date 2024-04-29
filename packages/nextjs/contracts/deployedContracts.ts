@@ -496,28 +496,42 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        allowance: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        approve: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        balanceOf: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        decimals: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        decreaseAllowance: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        increaseAllowance: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        allowance:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        approve:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        balanceOf:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        decimals:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        decreaseAllowance:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        increaseAllowance:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
         name: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        symbol: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        totalSupply: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        transfer: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        transferFrom: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        symbol:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        totalSupply:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        transfer:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        transferFrom:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
         owner: "@openzeppelin/contracts/access/Ownable.sol",
         renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
         transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
-        DOMAIN_SEPARATOR: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        eip712Domain: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        nonces: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
-        permit: "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        DOMAIN_SEPARATOR:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        eip712Domain:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        nonces:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
+        permit:
+          "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol",
       },
     },
     ScrollFighter: {
-      address: "0xbb33edd5DE81a407054F019706015DaC0ff9A9cA",
+      address: "0x16d4fAD899F2c925AB3e7293F081545Dd08d73B6",
       abi: [
         {
           inputs: [
@@ -848,9 +862,9 @@ const deployedContracts = {
                   type: "address[2]",
                 },
                 {
-                  internalType: "bytes",
+                  internalType: "bytes32",
                   name: "challengerCommitment",
-                  type: "bytes",
+                  type: "bytes32",
                 },
                 {
                   internalType: "uint256[2]",
@@ -918,8 +932,13 @@ const deployedContracts = {
             },
             {
               internalType: "bytes",
-              name: "proof",
+              name: "_proof",
               type: "bytes",
+            },
+            {
+              internalType: "bytes32",
+              name: "_commitment",
+              type: "bytes32",
             },
             {
               internalType: "uint256",
@@ -936,28 +955,23 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
-              name: "gameId",
+              name: "_gameId",
               type: "uint256",
             },
             {
               internalType: "uint256",
-              name: "fighterID",
+              name: "_fighterID",
               type: "uint256",
             },
             {
               internalType: "uint256[3]",
-              name: "moves",
+              name: "_moves",
               type: "uint256[3]",
             },
             {
-              internalType: "uint256",
-              name: "nonce",
-              type: "uint256",
-            },
-            {
-              internalType: "bytes",
-              name: "proof",
-              type: "bytes",
+              internalType: "string",
+              name: "_secret",
+              type: "string",
             },
           ],
           name: "revealFight",

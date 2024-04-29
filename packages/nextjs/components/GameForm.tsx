@@ -1,9 +1,9 @@
 "use client";
 
-// GameForm.tsx
 import React, { useEffect, useState } from "react";
 // import circuit from "../../noir/circuits/target/scrollfighter.json";
 import { Fighter, fighters } from "./Fighters";
+import web3 from "./web3";
 // import { BarretenbergBackend } from "@noir-lang/backend_barretenberg";
 // import { Noir } from "@noir-lang/noir_js";
 // import { CompiledCircuit } from "@noir-lang/types";
@@ -22,6 +22,13 @@ interface GameFormProps {
   initialAmount?: string;
 }
 
+const generateHash = (fighterId: number, moves: Move[], secret: string) => {
+  return web3.utils.soliditySha3(
+    { type: "uint256", value: fighterId },
+    { type: "uint256[]", value: moves.map(move => moves.indexOf(move) + 1) },
+    { type: "string", value: secret },
+  );
+};
 const moves = ["Attack", "Defend", "Special"] as const;
 type Move = (typeof moves)[number];
 
@@ -185,15 +192,16 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
           }
           await new Promise(resolve => setTimeout(resolve, 1000));
         }
+
+        let commitment_hash = generateHash(selectedFighter.id, selectedMoves, secret.toString());
+        console.log(commitment_hash);
         // Verify proof on-chain
         const makeWriteWithParams = () =>
           writeContractAsync({
             address: deployedContractData.address,
             functionName: "proposeGame",
             abi: deployedContractData.abi,
-            // @ts-ignore
-
-            args: [opponent, "0x" + proofDetailResponse.data.proof.proof, BigInt(amount)],
+            args: [opponent, "0x" + proofDetailResponse.data.proof.proof, commitment_hash, BigInt(amount)],
           });
         await writeTxn(makeWriteWithParams);
         // onChange();
@@ -216,7 +224,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
 
     try {
       // Ensure moveIndices always has three elements, each converted to BigInt
-      const moveIndices = selectedMoves.map(move => BigInt(moves.indexOf(move)));
+      const moveIndices = selectedMoves.map(move => moves.indexOf(move) + 1);
       if (moveIndices.length !== 3) {
         console.error("Invalid number of moves selected");
         return;
@@ -316,7 +324,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
                     Health:
                     <div className="w-full bg-gray-200 rounded-full h-4">
                       <div
-                        className="bg-primary h-4 rounded-full bg-red-500"
+                        className="bg-primary h-4 rounded-full "
                         style={{ width: `${selectedFighter ? selectedFighter.health * 10 : 0}%` }}
                       ></div>
                     </div>
@@ -326,7 +334,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
                     Attack:
                     <div className="w-full bg-gray-200 rounded-full h-4">
                       <div
-                        className="bg-primary h-4 rounded-full bg-green-500"
+                        className="bg-primary h-4 rounded-full"
                         style={{ width: `${selectedFighter ? selectedFighter.attack * 10 : 0}%` }}
                       ></div>
                     </div>
@@ -336,7 +344,7 @@ export const GameForm = ({ mode, initialOpponentAddress, initialAmount }: GameFo
                     Defense:
                     <div className="w-full bg-gray-200 rounded-full h-4">
                       <div
-                        className="bg-primary h-4 rounded-full bg-blue-500"
+                        className="bg-primary h-4 rounded-full"
                         style={{ width: `${selectedFighter ? selectedFighter.defense * 10 : 0}%` }}
                       ></div>
                     </div>

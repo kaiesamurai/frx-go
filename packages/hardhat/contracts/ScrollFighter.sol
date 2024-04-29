@@ -76,7 +76,7 @@ contract ScrollFighter {
 		uint id;
 		uint wageredAmount;
 		address[2] players;
-		bytes challengerCommitment;
+		bytes32 challengerCommitment;
 		uint[2] fighterIds;
 		uint[3][2] moves; // Assumed to be 3 rounds of moves for 2 players
 		uint[3][2] pain;
@@ -115,7 +115,8 @@ contract ScrollFighter {
 	// GAME FUNCTIONS
 	function proposeGame(
 		address _opponent,
-		bytes calldata proof,
+		bytes calldata _proof,
+		bytes32 _commitment,
 		uint _amount
 	) external {
 		require(
@@ -131,14 +132,14 @@ contract ScrollFighter {
 
 		// Verify proof
 		bytes32[] memory publicInputs = new bytes32[](0);
-		require(verifier.verify(proof, publicInputs), "Invalid proof");
+		require(verifier.verify(_proof, publicInputs), "Invalid proof");
 
 		uint gameId = nextGameId++;
 		games[gameId] = Game({
 			id: gameId,
 			wageredAmount: amount,
 			players: [msg.sender, _opponent],
-			challengerCommitment: proof,
+			challengerCommitment: _commitment,
 			fighterIds: [uint(0), uint(0)],
 			moves: [[uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)]],
 			pain: [[uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)]],
@@ -182,6 +183,8 @@ contract ScrollFighter {
 		// Validate that special moves (value 3) appear only once or not at all
 		uint specialMoveCount = 0;
 		for (uint i = 0; i < moves.length; i++) {
+			require(moves[i] >= 1, "Invalid move");
+			require(moves[i] <= 3, "Invalid move");
 			if (moves[i] == 3) {
 				specialMoveCount++;
 			}
@@ -195,40 +198,38 @@ contract ScrollFighter {
 			game.wageredAmount
 		);
 	}
-
 	function revealFight(
-		uint gameId,
-		uint fighterID,
-		uint[3] calldata moves,
-		uint nonce,
-		bytes memory proof
+		uint _gameId,
+		uint _fighterID,
+		uint[3] calldata _moves,
+		string memory _secret
 	) public {
 		// Load game
 		require(
-			games[gameId].gameState == GameState.ACCEPTED,
+			games[_gameId].gameState == GameState.ACCEPTED,
 			"Game must be in accepted state"
 		);
-		Game storage game = games[gameId];
+		Game storage game = games[_gameId];
 		require(msg.sender == game.players[0], "Only challenger can reveal");
 
 		// Verify fighter and strategy
-		// bytes32 hash = keccak256(abi.encodePacked(fighterID, moves, nonce));
+		// bytes32 hash = keccak256(abi.encodePacked(_fighterID, _moves, _secret));
 		// require(hash == game.challengerCommitment, "Commitment mismatch");
 
 		// Reveal fighter
-		game.fighterIds[0] = fighterID;
-		game.moves[0] = moves;
+		game.fighterIds[0] = _fighterID;
+		game.moves[0] = _moves;
 		game.gameState = GameState.STARTED;
 		emit FightersRevealed(
-			gameId,
+			_gameId,
 			game.players[0],
 			game.players[1],
-			fighterID,
+			_fighterID,
 			game.fighterIds[1],
-			moves,
+			_moves,
 			game.moves[1]
 		);
-		playGame(gameId);
+		playGame(_gameId);
 	}
 
 	function playGame(uint gameId) internal {

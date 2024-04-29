@@ -24,7 +24,7 @@ export const FightDisplay: React.FC = () => {
   const [showRoundAnnouncement, setShowRoundAnnouncement] = useState<boolean>(false);
   const [gameLoaded, setGameLoaded] = useState<boolean>(false);
   const [gameId, setGameId] = useState<string>("");
-  const contractName = "ScrollFighterV2";
+  const contractName = "ScrollFighter";
 
   const { data: deployedContractData } = useDeployedContractInfo(contractName);
 
@@ -91,6 +91,7 @@ export const FightDisplay: React.FC = () => {
     if (gameId && gameData && gameData.id !== BigInt(0) && !isGameLoading) {
       setGameLoaded(true);
     }
+    console.log("Game data", gameData);
   }, [gameId, gameData, isGameLoading]);
 
   return (
@@ -153,8 +154,8 @@ export const FightDisplay: React.FC = () => {
                     backgroundColor: "red",
                     height: "10px",
                     width: `${
-                      (100 * Number(gameData.currentHealth[0])) /
-                      fighters.find(f => f.id === Number(gameData.fighterIds[0]))!.health
+                      // (100 * Number(gameData.currentHealth[0])) /
+                      fighters.find(f => f.id === Number(gameData.fighterIds[0]))!.health * 5
                     }%`,
                     margin: "0 10px",
                   }}
@@ -164,8 +165,8 @@ export const FightDisplay: React.FC = () => {
                     backgroundColor: "red",
                     height: "10px",
                     width: `${
-                      (100 * Number(gameData.currentHealth[1])) /
-                      fighters.find(f => f.id === Number(gameData.fighterIds[1]))!.health
+                      // (100 * Number(gameData.currentHealth[1])) /
+                      fighters.find(f => f.id === Number(gameData.fighterIds[1]))!.health * 5
                     }%`,
                     margin: "0 10px",
                   }}
@@ -205,9 +206,9 @@ export const FightDisplay: React.FC = () => {
             </>
           )}
         </div>
-        <p>Results:</p>
         {gameData && (
           <div style={{ marginTop: "20px", fontSize: "16px" }}>
+            <p>Results: {gameData?.winner}</p>
             <strong>Wagered Amount:</strong> {gameData.wageredAmount.toString()} ETH
           </div>
         )}{" "}

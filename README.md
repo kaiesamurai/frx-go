@@ -53,7 +53,7 @@ Due to the limited time, I could not complete everything I set out to do. Additi
 
 ### Verified smart contracts
 
-- [ScrollFighter](https://sepolia.scrollscan.com/address/0xbb33edd5DE81a407054F019706015DaC0ff9A9cA#code)
+- [ScrollFighter](https://sepolia.scrollscan.com/address/0x16d4fAD899F2c925AB3e7293F081545Dd08d73B6#code)
 - [FighterCoins](https://sepolia.scrollscan.com/address/0x64CDeB6CD5ecfB002bdaFabc98B5C883C5C06B27#code)
 - [UltraVerifier](https://sepolia.scrollscan.com/address/0x06cA44b817F9172e1BaB3a8e8a36020AeC6D7e8d#code)
 
