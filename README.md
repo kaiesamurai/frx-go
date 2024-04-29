@@ -30,18 +30,18 @@ A contract written in Noir is used to verify the validity of the challenger's co
 
 ### Sindri
 
-Scroll Fighter uses Sindri to generate proofs using their API.
+Scroll Fighter uses Noir and Sindri to generate proofs using the Sindri API. A very smooth and developer friendly way to interact with zk-proofs.
 
 - [Sindri configuration](https://github.com/arjanjohan/scroll-fighter/tree/33e5e043bd6b3beb35e60fb84cbf66c5dde24264/packages/noir)
 - [Sindri frontend intregation](https://github.com/arjanjohan/scroll-fighter/blob/2f9f2b9487f9a2df05dee49a2c94bd32b3fa2c13/packages/nextjs/components/GameForm.tsx#L154)
 
 ### The Graph
 
-A subgraph is created to query created games on the ScrollFighter contract. Check out the games tab to see a nice overview of games that are retrieved from the subgraph. (It's not in the demo video because I did not have time to redo the video after completing this component)
+A subgraph is created to query created games on the ScrollFighter contract. Check out the games tab to see a nice overview of games that are retrieved from the subgraph. Please check out the screenshot above to see the games overview. It's not in the demo video, because I completed this part very last minute.
 
 - [Subgraph code](https://github.com/arjanjohan/scroll-fighter/tree/main/packages/graph).
 - [Subgraph endpoint](https://api.studio.thegraph.com/query/72991/scrollfighter/version/latest)
-- [Games page]
+- [Games Overview page](https://github.com/arjanjohan/scroll-fighter/tree/3b7dd99d66a4344f5cfbd80556526ac1181fb7a9/packages/nextjs/app/games)
 
 ### Ankr
 
@@ -51,13 +51,12 @@ This project uses Ankr RPC to deploy the game smart contracts. See the hardhat c
 
 Due to the limited time, I could not complete everything I set out to do. Additional features that I plan to add are:
 
-- Create a new page with overview of all games, using The Graph to query existing games.
 - Allow challengers to start open games (anyone can join/accept)
 - Complete and polish up game display animations
 
 ## Links
 
-- [Vercel deployment](https://scrollfighter.vercel.app/)
+- [Vercel deployment (not latest version)](https://scrollfighter.vercel.app/)
 - [Presentation slides](https://docs.google.com/presentation/d/1IYbLM9cwdpbuSvShZCdJoJ4JEDa683sMTGp3Bh6K79o/edit?usp=sharing)
 - [Presentation video](https://www.loom.com/share/bf35511f16b140e98bf324ac79085769?sid=247ee967-9e0c-4594-88cf-a2f3587ee6b9)
 - [Dorahacks BUILD](https://dorahacks.io/buidl/11485)
